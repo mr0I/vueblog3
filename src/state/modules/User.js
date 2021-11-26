@@ -1,10 +1,12 @@
-import { createStore  } from "vuex";
+// import { createStore  } from "vuex";
 // import Vue from 'vue';
 import Swal from 'sweetalert2';
 import router from '../../Routes';
 import * as cryptojS from 'crypto-js';
 import axios from 'axios';
 import toastr from 'toastr';
+import { VueCookieNext } from 'vue-cookie-next';
+
 
 
 const state = {
@@ -49,8 +51,8 @@ const mutations = {
 
     CheckAuth(state){
         // check if cookie is set and not expired
-        if (Vue.cookie.get(process.env.VUE_APP_AUTH_COOKIE_NAME)){
-            const token = Vue.cookie.get(process.env.VUE_APP_AUTH_COOKIE_NAME);
+        if (VueCookieNext.getCookie(process.env.VUE_APP_AUTH_COOKIE_NAME)){
+            const token = VueCookieNext.getCookie(process.env.VUE_APP_AUTH_COOKIE_NAME);
             decryptTokenFunc(process.env.VUE_APP_AUTH_SECRET_KEY , token);
         } else {
             state.IsUserAuthenticated = false;
@@ -63,7 +65,7 @@ const mutations = {
 
         let unix_timestamp = jsonLoginResult.expire_time;
         let expireIn = new Date(unix_timestamp * 1000);
-        Vue.cookie.set(process.env.VUE_APP_AUTH_COOKIE_NAME, loginResult, {
+        VueCookieNext.setCookie(process.env.VUE_APP_AUTH_COOKIE_NAME, loginResult, {
             expires: expireIn
         },null,null,true,true);
     },
@@ -82,7 +84,7 @@ const mutations = {
     },
 
     SetUserAuthenticated(state, tokenData) {
-        if (Vue.cookie.get(process.env.VUE_APP_AUTH_COOKIE_NAME)){
+        if (VueCookieNext.getCookie(process.env.VUE_APP_AUTH_COOKIE_NAME)){
             const {secret_key , token} = tokenData;
             decryptTokenFunc(secret_key , token);
         } else {
@@ -92,7 +94,7 @@ const mutations = {
     },
 
     SignOut() {
-        Vue.cookie.delete(process.env.VUE_APP_AUTH_COOKIE_NAME);
+        VueCookieNext.removeCookie(process.env.VUE_APP_AUTH_COOKIE_NAME);
         state.IsUserAuthenticated = false;
         state.user_id = '';
         state.UserAvatar = '';
@@ -105,18 +107,19 @@ const actions = {
 
     RegisterUser(context, registerData) {
         state.is_form_submited = true;
-        Vue.http.post('register', registerData)
+        axios.post('auth/register', registerData)
             .then(response => {
-                if (response.status === 200 && response.body.status === 'Done') {
-                    Swal.fire({
-                        title: 'Success',
-                        text: 'ثبت نام با موفقیت انجام شد',
-                        icon: 'success',
-                        confirmButtonText: 'OK'
-                    });
-                    state.is_form_submited=false;
-                    router.push({name:'login'});
-                }
+                console.log('res',response);
+                // if (response.status === 200 && response.body.status === 'Done') {
+                //     Swal.fire({
+                //         title: 'Success',
+                //         text: 'ثبت نام با موفقیت انجام شد',
+                //         icon: 'success',
+                //         confirmButtonText: 'OK'
+                //     });
+                //     state.is_form_submited=false;
+                //     router.push({name:'login'});
+                // }
             });
     },
 
@@ -124,7 +127,7 @@ const actions = {
         return new Promise(function (resolve,reject) {
             axios.post('/login', loginData ,{
                 headers:{
-                    Authorization: 'Bearer ' + Vue.cookie.get(process.env.VUE_APP_AUTH_COOKIE_NAME)
+                    Authorization: 'Bearer ' + VueCookieNext.getCookie(process.env.VUE_APP_AUTH_COOKIE_NAME)
                 }
             }).then(response => {
                 const result = response.data.result;
@@ -153,7 +156,7 @@ const actions = {
             resolve_data.context.commit("SetAuthCookie", resolve_data.token);
             resolve_data.context.commit("SetUserAuthenticated", tokenData);
             const userData = {"id": state.user_id};
-            Vue.http.post('GetUserById', userData)
+            axios.post('GetUserById', userData)
                 .then(response => {
                     resolve_data.context.commit("SetUserFullName", response.body.User.name);
                     if (response.body.UserMeta !== null  ) {
@@ -171,7 +174,7 @@ const actions = {
     },
 
     GetUserById(context , user_id){
-        Vue.http.post('GetUserById', user_id)
+        axios.post('GetUserById', user_id)
             .then(response => {
                 if (response.body.User !== null  ) context.commit("SetUserFullName", response.body.User.name);
                 if (response.body.UserMeta !== null  ) {

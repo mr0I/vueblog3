@@ -1,12 +1,13 @@
-import Vue from "vue";
+// import Vue from "vue";
+import { VueCookieNext } from 'vue-cookie-next';
 import * as cryptojS from "crypto-js";
 
 export default function auth({ next, router }) {
-    if (!Vue.cookie.get(process.env.VUE_APP_AUTH_COOKIE_NAME)) {
+    if (!VueCookieNext.getCookie(process.env.VUE_APP_AUTH_COOKIE_NAME)) {
         return router.push({ name: 'login' });
     }
 
-    const token = Vue.cookie.get(process.env.VUE_APP_AUTH_COOKIE_NAME);
+    const token = VueCookieNext.getCookie(process.env.VUE_APP_AUTH_COOKIE_NAME);
     const userID = decryptTokenFunc(process.env.VUE_APP_AUTH_SECRET_KEY , token);
     if (!userID) return router.push({ name: 'login' });
 
