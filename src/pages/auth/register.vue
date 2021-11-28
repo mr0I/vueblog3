@@ -1,107 +1,105 @@
 <template>
 
-    <!-- content-Start -->
-    <section class="main_content">
-        <div class="container-fluid">
-            <div class="row">
-                <div style="width: 80%;margin:auto 10%;">
-                    <div class="card text-center">
-                        <div class="card-header">
-                            <h5>ثبت نام</h5>
-                        </div>
-                        <div class="card-body">
-                            <div class="formAdd">
-                                <form action="#" id="signupFrm" class="form-control" method="post" style="border:none;">
-                                    <div class="d-flex flex-wrap justify-content-center">
-                                        <div class="input-group my-4 mr-sm-2 w-50">
-                                            <div class="input-group-prepend"><div class="input-group-text"><i class="material-icons">person</i></div></div>
-                                            <input type="text" class="form-control" placeholder="نام" name="name" v-model="name">
-                                        </div>
-                                    </div>
-                                    <div class="d-flex flex-wrap justify-content-center">
-                                        <div class="input-group my-4 mr-sm-2 w-50">
-                                            <div class="input-group-prepend"><div class="input-group-text"><i class="material-icons">email</i></div></div>
-                                            <input type="email" class="form-control" placeholder="ایمیل*" v-model="email"
-                                                   >
-                                        </div>
-                                        <!--<div class="errors w-50 p-2" v-if="$v.email.$invalid && $v.email.$dirty">-->
-                                            <!--<small class="float-right text-danger" v-if="!$v.email.required && $v.email.$dirty">-->
-                                                <!--فیلد ایمیل را تکمیل کنید.-->
-                                            <!--</small>-->
-                                            <!--<br>-->
-                                            <!--<small class="float-right text-danger" v-if="!$v.email.email">-->
-                                                <!--ایمیل معتبر نیست.-->
-                                            <!--</small>-->
-                                            <!--<br>-->
-                                            <!--<small class="float-right text-danger" v-if="!$v.email.maxLength">-->
-                                                <!--ایمیل کاربر نمیتواند بیشتر از {{$v.email.$params.maxLength.max}} کاراکتر داشته باشد-->
-                                            <!--</small>-->
-                                            <!--<br>-->
-                                            <!--<small class="float-right text-danger" v-if="!$v.email.unique && $v.email.$dirty">-->
-                                                <!--ایمیل وارد شده تکراری میباشد-->
-                                            <!--</small>-->
-                                        <!--</div>-->
-                                    </div>
-                                    <div class="d-flex flex-wrap justify-content-center">
-                                        <div class="input-group my-4 mr-sm-2 w-50">
-                                            <div class="input-group-prepend"><div class="input-group-text"><i class="material-icons">vpn_key</i></div></div>
-                                            <input type="password" class="form-control" placeholder="رمز عبور*" v-model="password">
-                                        </div>
-                                        <!--<div class="errors w-50 p-2" v-if="$v.password.$invalid && $v.password.$dirty">-->
-                                            <!--<small class="float-right text-danger" v-if="!$v.password.required && $v.password.$dirty">-->
-                                                <!--لطفا کلمه عبور را وارد کنید-->
-                                            <!--</small>-->
-                                            <!--<br>-->
-                                            <!--<small class="float-right text-danger" v-if="!$v.password.minLength">-->
-                                                <!--کلمه عبور باید حداقل شامل {{$v.password.$params.minLength.min}} کاراکتر باشد-->
-                                            <!--</small>-->
-                                            <!--<br>-->
-                                            <!--<small class="float-right text-danger" v-if="!$v.password.maxLength">-->
-                                                <!--کلمه عبور کاربر نمیتواند بیشتر از {{$v.password.$params.maxLength.max}} کاراکتر داشته باشد-->
-                                            <!--</small>-->
-                                        <!--</div>-->
-                                    </div>
-                                    <div class="d-flex flex-wrap justify-content-center">
-                                        <div class="input-group my-4 mr-sm-2 w-50">
-                                            <div class="input-group-prepend"><div class="input-group-text"><i class="material-icons">vpn_key</i></div></div>
-                                            <input type="password" class="form-control" placeholder="تکرار رمز عبور*" v-model="password_confirmation"
-                                            >
-                                        </div>
-                                        <!--<div class="errors w-50 p-2" v-if="$v.password_confirmation.$invalid && $v.password_confirmation.$dirty">-->
-                                            <!--<small class="float-right text-danger" v-if="!$v.password_confirmation.sameAs && $v.password_confirmation.$dirty">-->
-                                                <!--کلمه عبور مغایرت دارد-->
-                                            <!--</small>-->
-                                        <!--</div>-->
-                                    </div>
-                                    <input type="submit" :value="!isFormSubmitted? 'ثبت نام' : 'در حال ارسال...' " class="btn btn-primary w-50 my-4"
-                                    @click.prevent="RegisterUser()" >
-                                </form>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <!--<div style="direction:ltr">{{$v}}</div>-->
+  <!-- content-Start -->
+  <section class="main_content">
+    <div class="container-fluid">
+      <div class="row">
+        <div style="width: 80%;margin:auto 10%;">
+          <div class="card text-center">
+            <div class="card-header">
+              <h5>ثبت نام</h5>
             </div>
+            <div class="card-body">
+              <div class="formAdd">
+                <Form class="form-control" id="signupFrm"
+                      style="border:none;" v-slot="{ errors , meta }" :validation-schema="regSchema">
+                  <div class="d-flex flex-wrap justify-content-center mb-4">
+                    <div class="input-group mr-sm-2 w-50">
+                      <div class="input-group-prepend"><div class="input-group-text"><i class="material-icons">person</i></div></div>
+                      <Field class="form-control" name="name" v-model="name" placeholder="نام" />
+                    </div>
+                    <div class="errors w-50 m-auto text-right text-danger">
+                      <small>{{ errors.name }}</small>
+                    </div>
+                  </div>
+                  <div class="d-flex flex-wrap justify-content-center mb-4">
+                    <div class="input-group mr-sm-2 w-50">
+                      <div class="input-group-prepend"><div class="input-group-text"><i class="material-icons">email</i></div></div>
+                      <Field class="form-control" name="email" v-model="email" placeholder="ایمیل*" />
+                    </div>
+                    <div class="errors w-50 m-auto text-right text-danger">
+                      <small>{{ errors.email }}</small>
+                    </div>
+                  </div>
+                  <div class="d-flex flex-wrap justify-content-center mb-4">
+                    <div class="input-group mr-sm-2 w-50">
+                      <div class="input-group-prepend"><div class="input-group-text"><i class="material-icons">vpn_key</i></div></div>
+                      <Field type="password" class="form-control" name="password" v-model="password" placeholder="رمز عبور*" />
+                    </div>
+                    <div class="errors w-50 m-auto text-right text-danger">
+                      <small>{{ errors.password }}</small>
+                    </div>
+                  </div>
+                  <div class="d-flex flex-wrap justify-content-center mb-4">
+                    <div class="input-group mr-sm-2 w-50">
+                      <div class="input-group-prepend"><div class="input-group-text"><i class="material-icons">vpn_key</i></div></div>
+                      <Field type="password" class="form-control" name="password_confirmation"
+                             v-model="password_confirmation" placeholder="تکرار رمز عبور*" />
+                    </div>
+                    <div class="errors w-50 m-auto text-right text-danger">
+                      <small>{{ errors.password_confirmation }}</small>
+                    </div>
+                  </div>
+
+                  <input type="submit" :value="!isFormSubmitted? 'ثبت نام' : 'در حال ارسال...' " class="btn btn-primary w-50 my-4"
+                         @click.prevent="RegisterUser()" :disabled="!meta.dirty || (Object.keys(errors).length!==0 || !isFormDirty) ">
+                </Form>
+
+              </div>
+            </div>
+          </div>
         </div>
-    </section>
-    <!-- content-End -->
+      </div>
+    </div>
+  </section>
+  <!-- content-End -->
 
 </template>
 
 <script>
-    // import {required, maxLength, email, minLength, sameAs} from "vuelidate/lib/validators";
+    import { Field, Form , configure } from 'vee-validate';
+    import * as yup from 'yup';
+    // Default values
+    configure({validateOnBlur: true, validateOnChange: true, validateOnInput: true, validateOnModelUpdate: false,});
+
+
     export default {
         data(){
+            const regSchema = yup.object({
+                name: yup.string(),
+                email: yup.string().required('فیلد ایمیل الزامی است')
+                    .email('ایمیل معتبر نیست!').min(8,'حداقل 8 حرف وارد کنید'),
+                password: yup.string().required('فیلد پسورد الزامی است').min(6,'حداقل 6 حرف وارد کنید'),
+                password_confirmation: yup.string().oneOf([yup.ref('password'), null], 'پسوردها مطابقت ندارند!')
+            });
+
             return{
                 name:'',
                 email:'',
                 password:'',
-                password_confirmation: ''
+                password_confirmation: '',
+                regSchema
             }
+        },
+        components:{
+            Field,Form
         },
         computed:{
             isFormSubmitted(){
                 return this.$store.getters.IsFormSubmitted;
+            },
+            isFormDirty(){
+                return (this.email !== '' && this.password !== '' && this.password_confirmation !== '');
             }
         },
         methods:{

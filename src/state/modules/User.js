@@ -110,16 +110,23 @@ const actions = {
         axios.post('auth/register', registerData)
             .then(response => {
                 console.log('res',response);
-                // if (response.status === 200 && response.body.status === 'Done') {
-                //     Swal.fire({
-                //         title: 'Success',
-                //         text: 'ثبت نام با موفقیت انجام شد',
-                //         icon: 'success',
-                //         confirmButtonText: 'OK'
-                //     });
-                //     state.is_form_submited=false;
-                //     router.push({name:'login'});
-                // }
+                if (response.status === 200 && response.data.result === 'Done') {
+                    Swal.fire({
+                        title: 'Success',
+                        text: 'ثبت نام با موفقیت انجام شد',
+                        icon: 'success',
+                        confirmButtonText: 'OK'
+                    });
+                    state.is_form_submited=false;
+                    router.push({name:'login'});
+                } else {
+                    Swal.fire({
+                        title: 'خطا در ثبت اطلاعات',
+                        text: response.data.err.errors[0].message ,
+                        icon: 'error',
+                        confirmButtonText: 'OK'
+                    });
+                }
             });
     },
 
