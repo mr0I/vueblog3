@@ -51,7 +51,7 @@
                     </div>
                   </div>
 
-                  <input type="submit" :value="!isFormSubmitted? 'ثبت نام' : 'در حال ارسال...' " class="btn btn-primary w-50 my-4"
+                  <input type="submit" :value="!isFormSubmitted? 'ثبت نام' : '...' " class="btn btn-primary w-50 my-4"
                          @click.prevent="RegisterUser()" :disabled="!meta.dirty || (Object.keys(errors).length!==0 || !isFormDirty) ">
                 </Form>
 

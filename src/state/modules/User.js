@@ -110,7 +110,7 @@ const actions = {
         axios.post('auth/register', registerData)
             .then(response => {
                 console.log('res',response);
-                if (response.status === 200 && response.data.result === 'Done') {
+                if (response.status === 200) {
                     Swal.fire({
                         title: 'Success',
                         text: 'ثبت نام با موفقیت انجام شد',
@@ -132,9 +132,9 @@ const actions = {
 
     LoginUser(context, loginData) {
         return new Promise(function (resolve,reject) {
-            axios.post('/login', loginData ,{
+            axios.post('auth/login', loginData ,{
                 headers:{
-                    Authorization: 'Bearer ' + VueCookieNext.getCookie(process.env.VUE_APP_AUTH_COOKIE_NAME)
+                    //Authorization: 'Bearer ' + VueCookieNext.getCookie(process.env.VUE_APP_AUTH_COOKIE_NAME)
                 }
             }).then(response => {
                 const result = response.data.result;
