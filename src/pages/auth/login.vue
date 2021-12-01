@@ -28,8 +28,8 @@
                     </div>
                   </div>
 
-                  <input type="submit" :value="!isLoginFormSubmitted? 'ورود' : '...' " class="btn btn-success w-50 my-4"
-                         @click.prevent="LoginUser()" id="login_submit">
+                  <input type="submit" class="btn btn-success w-50 my-4"
+                         @click.prevent="LoginUser()" id="login_submit" value="ورود">
 
                 </form>
               </div>
@@ -52,11 +52,6 @@
                 password:''
             }
         },
-        computed:{
-            isLoginFormSubmitted(){
-                return this.$store.getters.isLoginFormSubmitted;
-            }
-        },
         methods:{
             async LoginUser(){
                 const login_data = {
@@ -65,7 +60,6 @@
                 };
                 this.$store.dispatch("LoginUser", login_data);
             },
-
         }
     }
 </script>

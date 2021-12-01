@@ -115,3 +115,10 @@
         },
     }
 </script>
+
+
+<style>
+  input[type=submit]:disabled{
+    cursor: not-allowed;
+  }
+</style>

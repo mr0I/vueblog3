@@ -2,10 +2,11 @@
 // import Vue from 'vue';
 import Swal from 'sweetalert2';
 import router from '../../Routes';
-import * as cryptojS from 'crypto-js';
+//import * as cryptojS from 'crypto-js';
 import axios from 'axios';
 import toastr from 'toastr';
 import { VueCookieNext } from 'vue-cookie-next';
+import jwt from 'jsonwebtoken';
 
 
 
@@ -36,9 +37,6 @@ const getters = {
     IsFormSubmitted(state){
         return state.is_form_submited;
     },
-    isLoginFormSubmitted(state){
-        return state.is_login_form_submited;
-    },
     GetUserID(state){
         return state.user_id;
     },
@@ -61,10 +59,10 @@ const mutations = {
     },
 
     SetAuthCookie(state, loginResult) {
-        let jsonLoginResult = JSON.parse(loginResult);
+        // let jsonLoginResult = JSON.parse(loginResult);
+        // let unix_timestamp = jsonLoginResult.expire_time;
 
-        let unix_timestamp = jsonLoginResult.expire_time;
-        let expireIn = new Date(unix_timestamp * 1000);
+        let expireIn = new Date((Date.now() + 10800) * 1000);
         VueCookieNext.setCookie(process.env.VUE_APP_AUTH_COOKIE_NAME, loginResult, {
             expires: expireIn
         },null,null,true,true);
@@ -106,7 +104,7 @@ const mutations = {
 const actions = {
 
     RegisterUser(context, registerData) {
-        state.is_form_submited = true;
+        context.commit('IsFormSubmitted',true);
         axios.post('auth/register', registerData)
             .then(response => {
                 console.log('res',response);
@@ -117,7 +115,7 @@ const actions = {
                         icon: 'success',
                         confirmButtonText: 'OK'
                     });
-                    state.is_form_submited=false;
+                    context.commit('IsFormSubmitted',false);
                     router.push({name:'login'});
                 } else {
                     Swal.fire({
@@ -133,38 +131,32 @@ const actions = {
     LoginUser(context, loginData) {
         return new Promise(function (resolve,reject) {
             axios.post('auth/login', loginData ,{
-                headers:{
-                    //Authorization: 'Bearer ' + VueCookieNext.getCookie(process.env.VUE_APP_AUTH_COOKIE_NAME)
-                }
+                // headers:{
+                //     Authorization: 'Bearer ' + VueCookieNext.getCookie(process.env.VUE_APP_AUTH_COOKIE_NAME)
+                // }
             }).then(response => {
-                const result = response.data.result;
-                const token = response.data.token;
+                console.log('resp',response);
+                const {result,token} = response.data;
 
-                if (result === "NotFound" || result === "ValidationError" ) {
-                    Swal.fire({
-                        text: 'کاربری با مشخصات وارد شده یافت نشد',
-                        icon: 'error',
-                        confirmButtonText: 'OK'
-                    });
-                }
-                if (result === "Done") {
+                if (response.status===200 && result==='Done') {
                     const resoveData={
                         'token': token,
                         'context': context
                     };
                     resolve(resoveData);
                 } else {
-                    reject();
+                    reject(response.data.msg);
                 }
             });
-
         }).then(function (resolve_data) {
-            const tokenData = {"secret_key":process.env.VUE_APP_AUTH_SECRET_KEY, "token":resolve_data.token};
+            const tokenData = {"secret_key":process.env.VUE_APP_TOKEN_SECRET, "token":resolve_data.token};
+            console.log('token',resolve_data.token);
             resolve_data.context.commit("SetAuthCookie", resolve_data.token);
             resolve_data.context.commit("SetUserAuthenticated", tokenData);
             const userData = {"id": state.user_id};
-            axios.post('GetUserById', userData)
+            axios.post('auth/getuserbyid', userData)
                 .then(response => {
+                    console.log('respppp',response);
                     resolve_data.context.commit("SetUserFullName", response.body.User.name);
                     if (response.body.UserMeta !== null  ) {
                         resolve_data.context.commit("SetUserMeta", response.body.UserMeta);
@@ -175,8 +167,13 @@ const actions = {
                 });
             toastr.success('ورود موفق','تبریک');
             router.push({name:'dash'});
-        }).catch(function () {
-           console.log('Login Error');
+        }).catch(function (err) {
+            console.log('error');
+            Swal.fire({
+                text: err,
+                icon: 'error',
+                confirmButtonText: 'OK'
+            });
         });
     },
 
@@ -244,20 +241,29 @@ const actions = {
     }
 };
 
+
 function decryptTokenFunc(secret_key , token){
-    let jsonToken = '';
-    try {
-        jsonToken = JSON.parse(token);
-    } catch (e) {
-        return false;
-    }
-    let encrypted = jsonToken.ciphertext;
-    let salt = cryptojS.enc.Hex.parse(jsonToken.salt);
-    let iv = cryptojS.enc.Hex.parse(jsonToken.iv);
-    let key = cryptojS.PBKDF2(secret_key, salt, { hasher: cryptojS.algo.SHA512, keySize: 64/8, iterations: 999});
-    let decrypted = cryptojS.AES.decrypt(encrypted, key, { iv: iv});
-    state.user_id = decrypted.toString(cryptojS.enc.Utf8);
-    state.IsUserAuthenticated = (state.user_id !== '');
+    // let jsonToken = '';
+    // try {
+    //     jsonToken = JSON.parse(token);
+    // } catch (e) {
+    //     return false;
+    // }
+    // let encrypted = jsonToken.ciphertext;
+    // let salt = cryptojS.enc.Hex.parse(jsonToken.salt);
+    // let iv = cryptojS.enc.Hex.parse(jsonToken.iv);
+    // let key = cryptojS.PBKDF2(secret_key, salt, { hasher: cryptojS.algo.SHA512, keySize: 64/8, iterations: 999});
+    // let decrypted = cryptojS.AES.decrypt(encrypted, key, { iv: iv});
+    // state.user_id = decrypted.toString(cryptojS.enc.Utf8);
+    // state.IsUserAuthenticated = (state.user_id !== '');
+
+    jwt.verify(token, process.env.TOKEN_SECRET, (err, user) => {
+        if (!err) {
+            state.user_id = user.id;
+            state.IsUserAuthenticated = (state.user_id !== '');
+        }
+    });
+
 }
 
 export default {

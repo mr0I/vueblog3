@@ -53,7 +53,7 @@ const routes = [
         path: '/dashboard',
         component: Dashboard,
         meta: {
-            middleware: [auth,defJQ],
+            //middleware: [auth,defJQ],
         },
         name:'dash',
         children:[
