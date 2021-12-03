@@ -167,6 +167,7 @@
         async created(){
             await this.$store.dispatch("CheckUserLogin");
             const userData = {"id": this.$store.getters.GetUserID};
+            console.log('udata',userData);
             this.$store.dispatch("GetUserById" , userData);
         },
         computed: {

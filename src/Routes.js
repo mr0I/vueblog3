@@ -45,7 +45,7 @@ const routes = [
         path: '/login',
         component: Login,
         meta: {
-            //middleware: guest,
+            middleware: guest,
         },
         name:'login'
     },
@@ -53,7 +53,7 @@ const routes = [
         path: '/dashboard',
         component: Dashboard,
         meta: {
-            //middleware: [auth,defJQ],
+            middleware: [auth,defJQ],
         },
         name:'dash',
         children:[

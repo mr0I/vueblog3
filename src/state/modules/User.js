@@ -135,7 +135,6 @@ const actions = {
                 //     Authorization: 'Bearer ' + VueCookieNext.getCookie(process.env.VUE_APP_AUTH_COOKIE_NAME)
                 // }
             }).then(response => {
-                console.log('resp',response);
                 const {result,token} = response.data;
 
                 if (response.status===200 && result==='Done') {
@@ -150,21 +149,23 @@ const actions = {
             });
         }).then(function (resolve_data) {
             const tokenData = {"secret_key":process.env.VUE_APP_TOKEN_SECRET, "token":resolve_data.token};
-            console.log('token',resolve_data.token);
+            //console.log('token',resolve_data.token);
             resolve_data.context.commit("SetAuthCookie", resolve_data.token);
             resolve_data.context.commit("SetUserAuthenticated", tokenData);
-            const userData = {"id": state.user_id};
-            axios.post('auth/getuserbyid', userData)
-                .then(response => {
-                    console.log('respppp',response);
-                    resolve_data.context.commit("SetUserFullName", response.body.User.name);
-                    if (response.body.UserMeta !== null  ) {
-                        resolve_data.context.commit("SetUserMeta", response.body.UserMeta);
-                    } else {
-                        resolve_data.context.commit("SetUserMeta", null);
-                    }
-                    resolve_data.context.commit("SetAvatarLoaded",true);
-                });
+            // const userData = {"id": state.user_id};
+
+            this.GetUserById(resolve_data.context,state.user_id);
+
+            // axios.post('auth/getuserbyid', userData)
+            //     .then(response => {
+            //         resolve_data.context.commit("SetUserFullName", response.body.User.name);
+            //         if (response.body.UserMeta !== null  ) {
+            //             resolve_data.context.commit("SetUserMeta", response.body.UserMeta);
+            //         } else {
+            //             resolve_data.context.commit("SetUserMeta", null);
+            //         }
+            //         resolve_data.context.commit("SetAvatarLoaded",true);
+            //     });
             toastr.success('ورود موفق','تبریک');
             router.push({name:'dash'});
         }).catch(function (err) {
@@ -178,11 +179,13 @@ const actions = {
     },
 
     GetUserById(context , user_id){
-        axios.post('GetUserById', user_id)
+        axios.post('auth/getuserbyid', user_id)
             .then(response => {
-                if (response.body.User !== null  ) context.commit("SetUserFullName", response.body.User.name);
-                if (response.body.UserMeta !== null  ) {
-                    context.commit("SetUserMeta", response.body.UserMeta);
+                console.log('respppp',response);
+
+                if (response.data.body.User !== null  ) context.commit("SetUserFullName", response.data.body.User.name);
+                if (response.data.body.UserMeta !== null  ) {
+                    context.commit("SetUserMeta", response.data.body.UserMeta);
                 } else {
                     context.commit("SetUserMeta", null);
                 }
@@ -243,27 +246,12 @@ const actions = {
 
 
 function decryptTokenFunc(secret_key , token){
-    // let jsonToken = '';
-    // try {
-    //     jsonToken = JSON.parse(token);
-    // } catch (e) {
-    //     return false;
-    // }
-    // let encrypted = jsonToken.ciphertext;
-    // let salt = cryptojS.enc.Hex.parse(jsonToken.salt);
-    // let iv = cryptojS.enc.Hex.parse(jsonToken.iv);
-    // let key = cryptojS.PBKDF2(secret_key, salt, { hasher: cryptojS.algo.SHA512, keySize: 64/8, iterations: 999});
-    // let decrypted = cryptojS.AES.decrypt(encrypted, key, { iv: iv});
-    // state.user_id = decrypted.toString(cryptojS.enc.Utf8);
-    // state.IsUserAuthenticated = (state.user_id !== '');
-
-    jwt.verify(token, process.env.TOKEN_SECRET, (err, user) => {
+    jwt.verify(token, process.env.VUE_APP_TOKEN_SECRET, (err, user) => {
         if (!err) {
-            state.user_id = user.id;
+            state.user_id = user.data.id;
             state.IsUserAuthenticated = (state.user_id !== '');
         }
     });
-
 }
 
 export default {

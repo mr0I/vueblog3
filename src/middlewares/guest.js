@@ -1,30 +1,15 @@
-// import Vue from "vue";
 import { VueCookieNext } from 'vue-cookie-next';
-import * as cryptojS from "crypto-js";
+import jwt from "jsonwebtoken";
+
 
 export default function guest({ next, router }) {
     if (VueCookieNext.getCookie(process.env.VUE_APP_AUTH_COOKIE_NAME)) {
         const token = VueCookieNext.getCookie(process.env.VUE_APP_AUTH_COOKIE_NAME);
-        const userID = decryptTokenFunc(process.env.VUE_APP_AUTH_SECRET_KEY , token);
+        const userID = jwt.verify(token, process.env.VUE_APP_TOKEN_SECRET, (err, user) => {
+            if (!err) return user.data.id;
+        });
         if (userID) return router.push('/');
     }
 
     return next();
-}
-
-
-function decryptTokenFunc(secret_key , token){
-    let jsonToken = '';
-    try {
-        jsonToken = JSON.parse(token);
-    } catch (e) {
-        return false;
-    }
-    let encrypted = jsonToken.ciphertext;
-    let salt = cryptojS.enc.Hex.parse(jsonToken.salt);
-    let iv = cryptojS.enc.Hex.parse(jsonToken.iv);
-    let key = cryptojS.PBKDF2(secret_key, salt, { hasher: cryptojS.algo.SHA512, keySize: 64/8, iterations: 999});
-    let decrypted = cryptojS.AES.decrypt(encrypted, key, { iv: iv});
-
-    return decrypted.toString(cryptojS.enc.Utf8);
 }
