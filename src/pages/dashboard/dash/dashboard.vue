@@ -16,7 +16,7 @@
 <script>
   export default {
       async created() {
-          await this.$store.dispatch('GetCategories');
+          //await this.$store.dispatch('GetCategories');
       }
   }
 </script>

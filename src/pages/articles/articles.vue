@@ -126,11 +126,11 @@
 
 
 <script>
-  import pagination from 'laravel-vue-pagination';
+  //import pagination from 'laravel-vue-pagination';
 
     export default {
         components:{
-            pagination
+            //pagination
         },
         computed:{
             articles(){
@@ -150,10 +150,10 @@
             }
         },
         created() {
-            this.$store.dispatch("GetSubCatsFromServer");
-            this.$store.dispatch("GetHeadCatsFromServer");
-
-            this.Articles();
+            // this.$store.dispatch("GetSubCatsFromServer");
+            // this.$store.dispatch("GetHeadCatsFromServer");
+            //
+            // this.Articles();
         },
         methods:{
              Articles(page=1){

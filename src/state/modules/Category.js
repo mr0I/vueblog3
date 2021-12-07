@@ -1,6 +1,7 @@
-import Vue from 'vue';
 import Swal from "sweetalert2";
-import {router} from "../../main";
+import router from '../../Routes';
+import axios from 'axios';
+
 
 const state = {
     HeadCats:{},
@@ -49,7 +50,7 @@ const mutations = {
 
 const actions = {
     GetHeadCatsFromServer(context){
-        Vue.http.get('headCats')
+        axios.get('headCats')
             .then(response => {
                 if (response.status === 200) {
                     context.commit("SetHeadCats" , response.body.cats);
@@ -57,7 +58,7 @@ const actions = {
             });
     },
     GetSubCatsFromServer(context){
-        Vue.http.get('subCats')
+        axios.get('subCats')
             .then(response => {
                 if (response.status === 200) {
                     context.commit("SetSubCats" , response.body.cats);
@@ -66,9 +67,9 @@ const actions = {
     },
 
     StoreCategory(context , catData) {
-        Vue.http.post('categories' , catData)
+        axios.post('category/categories' , catData)
             .then(response => {
-                if (response.status === 200 && response.body.result === 'Done') {
+                if (response.status === 200 && response.data.result === 'Done') {
                     Swal.fire({
                         title: 'Success',
                         text: 'دسته جدید ثبت شد.',
@@ -85,7 +86,7 @@ const actions = {
     },
 
     GetSelectedCategory(context , category_id) {
-        Vue.http.get('categories/' + category_id)
+        axios.get('categories/' + category_id)
             .then(response => {
                 if (response.status === 200 && response.body.result === 'Done') {
                     context.commit("SetCategory" , JSON.parse(response.body.category));
@@ -99,7 +100,7 @@ const actions = {
     },
 
     EditCategory(context , catData){
-        Vue.http.put('categories/' + catData.id , catData)
+        axios.put('categories/' + catData.id , catData)
             .then(response => {
                 if (response.status === 200 && response.body.result === 'Done') {
                     Swal.fire({
@@ -114,7 +115,7 @@ const actions = {
 
     DeleteCategoy(context,cat_id){
         if (confirm('Sure?')){
-            Vue.http.delete('categories/' + cat_id)
+            axios.delete('categories/' + cat_id)
                 .then(response => {
                     console.log(response);
                     if (response.status === 200 && response.body.result === 'Done') {
@@ -132,7 +133,7 @@ const actions = {
 };
 
 function GetCategoriesFunc(context) {
-    Vue.http.get('categories')
+    axios.get('categories')
         .then(res => {
             return res.json();
         }).then(data=>{

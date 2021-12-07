@@ -1,8 +1,5 @@
-// import { createStore  } from "vuex";
-// import Vue from 'vue';
 import Swal from 'sweetalert2';
 import router from '../../Routes';
-//import * as cryptojS from 'crypto-js';
 import axios from 'axios';
 import toastr from 'toastr';
 import { VueCookieNext } from 'vue-cookie-next';
@@ -149,23 +146,11 @@ const actions = {
             });
         }).then(function (resolve_data) {
             const tokenData = {"secret_key":process.env.VUE_APP_TOKEN_SECRET, "token":resolve_data.token};
-            //console.log('token',resolve_data.token);
+
             resolve_data.context.commit("SetAuthCookie", resolve_data.token);
             resolve_data.context.commit("SetUserAuthenticated", tokenData);
-            // const userData = {"id": state.user_id};
+            resolve_data.context.dispatch("GetUserById",state.user_id);
 
-            this.GetUserById(resolve_data.context,state.user_id);
-
-            // axios.post('auth/getuserbyid', userData)
-            //     .then(response => {
-            //         resolve_data.context.commit("SetUserFullName", response.body.User.name);
-            //         if (response.body.UserMeta !== null  ) {
-            //             resolve_data.context.commit("SetUserMeta", response.body.UserMeta);
-            //         } else {
-            //             resolve_data.context.commit("SetUserMeta", null);
-            //         }
-            //         resolve_data.context.commit("SetAvatarLoaded",true);
-            //     });
             toastr.success('ورود موفق','تبریک');
             router.push({name:'dash'});
         }).catch(function (err) {

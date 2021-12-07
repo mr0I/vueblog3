@@ -27,12 +27,15 @@ const routes = [
         component: Index,
         meta:{
             title:"صفحه اصلی",
-            middleware:defJQ
+            middleware:[defJQ,log]
         }
     },
     {
         path: '/articles',
-        component: Articles
+        component: Articles,
+        meta:{
+            middleware:log,
+        }
     },
     {
         path: '/register',

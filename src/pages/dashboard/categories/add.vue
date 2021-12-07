@@ -43,15 +43,15 @@
             }
         },
         computed:{
-            headCats(){
-                return this.$store.getters.GetHeadCats;
-            },
+            // headCats(){
+            //     return this.$store.getters.GetHeadCats;
+            // },
             fromChangeChecking(){
                 return this.name!=='' && this.parent_id!=='';
             }
         },
         created() {
-            this.$store.dispatch('GetHeadCatsFromServer');
+            //this.$store.dispatch('GetHeadCatsFromServer');
         },
         watch:{
             fromChangeChecking(value) {
