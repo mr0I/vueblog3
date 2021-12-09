@@ -15,7 +15,7 @@
               <label class="mainLabel" for="submitted">مادر دسته</label>
               <select class="form-control" id="submitted" v-model="parent_id">
                 <option value="0" selected>---</option>
-                <option :value="category.id" v-for="category in headCats" :key="category.id">
+                <option :value="category.uuid" v-for="category in headCats" :key="category.uuid">
                   {{ category.name }}
                 </option>
               </select>
@@ -43,15 +43,15 @@
             }
         },
         computed:{
-            // headCats(){
-            //     return this.$store.getters.GetHeadCats;
-            // },
+            headCats(){
+                return this.$store.getters.GetHeadCats;
+            },
             fromChangeChecking(){
                 return this.name!=='' && this.parent_id!=='';
             }
         },
         created() {
-            //this.$store.dispatch('GetHeadCatsFromServer');
+            this.$store.dispatch('GetHeadCatsFromServer');
         },
         watch:{
             fromChangeChecking(value) {

@@ -50,10 +50,11 @@ const mutations = {
 
 const actions = {
     GetHeadCatsFromServer(context){
-        axios.get('headCats')
+        axios.get('category/headCats')
             .then(response => {
+                console.log('rrrr',response);
                 if (response.status === 200) {
-                    context.commit("SetHeadCats" , response.body.cats);
+                    context.commit("SetHeadCats" , response.data.categories);
                 }
             });
     },
