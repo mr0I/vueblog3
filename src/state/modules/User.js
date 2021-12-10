@@ -166,8 +166,6 @@ const actions = {
     GetUserById(context , user_id){
         axios.post('auth/getuserbyid', user_id)
             .then(response => {
-                console.log('respppp',response);
-
                 if (response.data.body.User !== null  ) context.commit("SetUserFullName", response.data.body.User.name);
                 if (response.data.body.UserMeta !== null  ) {
                     context.commit("SetUserMeta", response.data.body.UserMeta);

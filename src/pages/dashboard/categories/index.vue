@@ -27,15 +27,17 @@
               </tr>
               </thead>
               <tbody class="bg-light" v-if="CategoriesList.length!==0">
-              <tr v-for="(category,index) in CategoriesList.filter(cat => !cat.name.indexOf(this.filterByName))" :key="category.id">
+              <tr v-for="(category,index) in CategoriesList" :key="category.uuid">
+              <!--<tr v-for="(category,index) in CategoriesList.filter(cat => !cat.name.indexOf(this.filterByName))" :key="category.uuid">-->
                 <td >{{ ++index }}</td>
                 <td>{{ category.name }}</td>
-                <td>{{ category.get_parent.name }}</td>
+                <td>sdad</td>
+                <!--<td>{{ category.get_parent.name }}</td>-->
                 <td>
-                  <router-link :to="{ name: 'edit-category' , params:{catId:category.id} }"
+                  <router-link :to="{ name: 'edit-category' , params:{catId:category.uuid} }"
                                class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored bg-info">
                     ویرایش</router-link>
-                  <button  @click.prevent="deleteCat(category.id)"
+                  <button  @click.prevent="deleteCat(category.uuid)"
                      class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored bg-danger">
                     حذف</button>
                 </td>
@@ -62,6 +64,7 @@
         },
         created(){
              this.$store.dispatch('GetCategories');
+             console.log(this.CategoriesList);
         },
         computed:{
           CategoriesList(){

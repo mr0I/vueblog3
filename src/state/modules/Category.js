@@ -52,7 +52,6 @@ const actions = {
     GetHeadCatsFromServer(context){
         axios.get('category/headCats')
             .then(response => {
-                console.log('rrrr',response);
                 if (response.status === 200) {
                     context.commit("SetHeadCats" , response.data.categories);
                 }
@@ -87,10 +86,12 @@ const actions = {
     },
 
     GetSelectedCategory(context , category_id) {
-        axios.get('categories/' + category_id)
+        axios.get('category/category/' + category_id)
             .then(response => {
-                if (response.status === 200 && response.body.result === 'Done') {
-                    context.commit("SetCategory" , JSON.parse(response.body.category));
+                console.log('dddd',response);
+                if (response.status === 200 && response.data.result === 'Done') {
+                    context.commit("SetCategory" , response.data.category);
+                    // context.commit("SetCategory" , JSON.parse(response.data.category));
                     context.commit("SetIsEditDataReady" , true);
                 }
             });
@@ -101,9 +102,13 @@ const actions = {
     },
 
     EditCategory(context , catData){
-        axios.put('categories/' + catData.id , catData)
+        const data={
+            name: catData.name,
+            parent_id: catData.parent_id
+        };
+        axios.put('category/categories/' + catData.uuid , data)
             .then(response => {
-                if (response.status === 200 && response.body.result === 'Done') {
+                if (response.status === 200 && response.data.result === 'Done') {
                     Swal.fire({
                         title: 'Success',
                         text: 'دسته ویرایش شد.',
@@ -116,10 +121,10 @@ const actions = {
 
     DeleteCategoy(context,cat_id){
         if (confirm('Sure?')){
-            axios.delete('categories/' + cat_id)
+            axios.delete('category/remove/' + cat_id)
                 .then(response => {
-                    console.log(response);
-                    if (response.status === 200 && response.body.result === 'Done') {
+                    console.log('del',response);
+                    if (response.status === 200 && response.data.result === 'Done') {
                         Swal.fire({
                             title: 'Success',
                             text: 'دسته پاک شد.',
@@ -134,11 +139,10 @@ const actions = {
 };
 
 function GetCategoriesFunc(context) {
-    axios.get('categories')
-        .then(res => {
-            return res.json();
-        }).then(data=>{
-        context.commit('SetCategories' ,data);
+    axios.get('category/categories')
+        .then(response=>{
+        console.log('cats',response);
+        context.commit('SetCategories' ,response.data.categories);
     })
 }
 
