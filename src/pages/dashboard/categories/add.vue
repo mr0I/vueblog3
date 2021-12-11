@@ -13,9 +13,9 @@
             </div>
             <div class="form-group required col-md-4">
               <label class="mainLabel" for="submitted">مادر دسته</label>
-              <select class="form-control" id="submitted" v-model="parent_id">
+              <select class="form-control" id="submitted" v-model="parentId">
                 <option value="0" selected>---</option>
-                <option :value="category.uuid" v-for="category in headCats" :key="category.uuid">
+                <option :value="category.id" v-for="category in headCats" :key="category.id">
                   {{ category.name }}
                 </option>
               </select>
@@ -39,7 +39,7 @@
         data(){
             return{
                 name:'',
-                parent_id:''
+                parentId:''
             }
         },
         computed:{
@@ -47,7 +47,7 @@
                 return this.$store.getters.GetHeadCats;
             },
             fromChangeChecking(){
-                return this.name!=='' && this.parent_id!=='';
+                return this.name!=='' && this.parentId!=='';
             }
         },
         created() {
@@ -62,7 +62,7 @@
             AddCategory(){
                 const catData ={
                     name:this.name,
-                    parent_id:this.parent_id
+                    parentId: this.parentId
                 };
                 this.$store.dispatch('StoreCategory' , catData);
             }

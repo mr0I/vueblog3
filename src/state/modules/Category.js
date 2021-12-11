@@ -104,9 +104,9 @@ const actions = {
     EditCategory(context , catData){
         const data={
             name: catData.name,
-            parent_id: catData.parent_id
+            parentId: catData.parentId
         };
-        axios.put('category/categories/' + catData.uuid , data)
+        axios.put('category/categories/' + catData.id , data)
             .then(response => {
                 if (response.status === 200 && response.data.result === 'Done') {
                     Swal.fire({
