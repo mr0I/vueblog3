@@ -31,7 +31,7 @@
               <!--<tr v-for="(category,index) in CategoriesList.filter(cat => !cat.name.indexOf(this.filterByName))" :key="category.id">-->
                 <td >{{ ++index }}</td>
                 <td>{{ category.name }}</td>
-                <td v-if="category.category!==null">{{ category.category.name }}</td>
+                <td v-if="category.Parent!==null">{{ category.Parent.name }}</td>
                 <td v-else>---</td>
                 <td>
                   <router-link :to="{ name: 'edit-category' , params:{catId:category.id} }"
