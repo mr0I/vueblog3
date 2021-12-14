@@ -48,7 +48,7 @@ const mutations = {
         // check if cookie is set and not expired
         if (VueCookieNext.getCookie(process.env.VUE_APP_AUTH_COOKIE_NAME)){
             const token = VueCookieNext.getCookie(process.env.VUE_APP_AUTH_COOKIE_NAME);
-            decryptTokenFunc(process.env.VUE_APP_AUTH_SECRET_KEY , token);
+            decryptTokenFunc(process.env.VUE_APP_TOKEN_SECRET , token);
         } else {
             state.IsUserAuthenticated = false;
             state.user_id = '';
@@ -68,10 +68,13 @@ const mutations = {
     SetUserFullName(state, userFullName) {
         state.UserFullName = userFullName;
     },
+    SetUserID(state, userID) {
+        state.user_id = userID;
+    },
 
     SetUserMeta(state, userMeta) {
-        if (userMeta.UserAvatar !== null) state.UserAvatar = process.env.VUE_APP_UPLOAD_DIR + 'users_images/' + userMeta.UserAvatar.value;
-        if (userMeta.UserGender !== null) state.UserGender = userMeta.UserGender.value;
+        if (userMeta.UserAvatar !== '') state.UserAvatar = process.env.VUE_APP_UPLOAD_DIR + 'users_images/' + userMeta.UserAvatar;
+        if (userMeta.UserGender !== '') state.UserGender = userMeta.UserGender;
     },
 
     SetAvatarLoaded(state, is_loaded) {
@@ -104,7 +107,6 @@ const actions = {
         context.commit('IsFormSubmitted',true);
         axios.post('auth/register', registerData)
             .then(response => {
-                console.log('res',response);
                 if (response.status === 200) {
                     Swal.fire({
                         title: 'Success',
@@ -154,7 +156,6 @@ const actions = {
             toastr.success('ورود موفق','تبریک');
             router.push({name:'dash'});
         }).catch(function (err) {
-            console.log('error');
             Swal.fire({
                 text: err,
                 icon: 'error',
@@ -188,14 +189,15 @@ const actions = {
         const config = {
             headers: { 'content-type': 'multipart/form-data' }
         };
-        axios.post('/uploadImg' , imageData, config)
+        axios.post('auth/uploadimg' , imageData, config)
             .then(res => {
+                console.log('resss',res);
                 if (res.data.result === 'Done') {
                     const data = {
                         userID: state.user_id,
                         image : res.data.image
                     };
-                    axios.post('/update_meta_image' , data )
+                    axios.post('auth/updatemetaimage' , data )
                         .then(resp =>{
                             if (resp.data.result === 'Done') {
                                 alert('آپلود موفق.');
@@ -229,11 +231,14 @@ const actions = {
 
 
 function decryptTokenFunc(secret_key , token){
-    jwt.verify(token, process.env.VUE_APP_TOKEN_SECRET, (err, user) => {
+    jwt.verify(token, secret_key, (err, user) => {
         if (!err) {
             state.user_id = user.data.id;
             state.IsUserAuthenticated = (state.user_id !== '');
         }
+        // else {
+        //     console.log(err);
+        // }
     });
 }
 

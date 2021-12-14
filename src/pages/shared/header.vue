@@ -112,7 +112,7 @@
     <nav class="navigation" style="z-index: 10 !important">
       <ul class="menu" id="side_menu">
         <li class="menu-header">
-          <img src="../../assets/noise.gif" width="100" height="100" v-if="!isAvatarLoaded">
+          <img src="../../assets/noise.gif" width="100" height="100" v-if="! isAvatarLoaded">
           <img :src="UserAvatar" width="100" height="100" v-else-if="UserAvatar==''">
           <img :src="UserAvatar" width="100" height="100" v-else>
           <h5>نام کاربر: {{ UserFullName }}</h5>
@@ -167,7 +167,6 @@
         async created(){
             await this.$store.dispatch("CheckUserLogin");
             const userData = {"id": this.$store.getters.GetUserID};
-            console.log('udata',userData);
             this.$store.dispatch("GetUserById" , userData);
         },
         computed: {
@@ -181,8 +180,8 @@
                 const user_gender = (this.$store.getters.GetUserGender)? this.$store.getters.GetUserGender: 'male';
                 return (this.$store.getters.GetUserAvatar === '') ?
                     (user_gender === 'male') ?
-                        process.env.VUE_APP_DEFAULT_images_DIR +'avatar/male-avatar.png' :
-                        process.env.VUE_APP_DEFAULT_images_DIR +'avatar/female-avatar.png' : this.$store.getters.GetUserAvatar;
+                        process.env.VUE_APP_DEFAULT_images_DIR +'default/avatar/male-avatar.png' :
+                        process.env.VUE_APP_DEFAULT_images_DIR +'default/avatar/female-avatar.png' : this.$store.getters.GetUserAvatar;
             },
             UserGender() {
                 return this.$store.getters.GetUserGender;

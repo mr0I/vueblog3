@@ -36,7 +36,8 @@
                 <td>
                   <router-link :to="{ name: 'edit-category' , params:{catId:category.id} }"
                                class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored bg-info">
-                    ویرایش</router-link>
+                    ویرایش
+                  </router-link>
                   <button  @click.prevent="deleteCat(category.id)"
                      class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored bg-danger">
                     حذف</button>

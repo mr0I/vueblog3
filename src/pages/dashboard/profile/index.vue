@@ -1,5 +1,4 @@
 <template>
-
   <!-- content-Start -->
   <section class="panel_content">
     <div class="container-fluid">
@@ -60,7 +59,7 @@
         },
         created(){
             this.preview_image = (this.$store.getters.GetUserAvatar === '') ?
-                process.env.VUE_APP_DEFAULT_images_DIR +'default-avatar.jpg' :
+                process.env.VUE_APP_DEFAULT_images_DIR +'default/default-avatar.jpg' :
                 this.$store.getters.GetUserAvatar;
             this.name = (this.$store.getters.GetUserFullName === '')? '': this.$store.getters.GetUserFullName;
             this.gender = (this.$store.getters.GetUserGender === '')? 'male': this.$store.getters.GetUserGender;
