@@ -181,7 +181,7 @@
                 return (this.$store.getters.GetUserAvatar === '') ?
                     (user_gender === 'male') ?
                         process.env.VUE_APP_DEFAULT_images_DIR +'default/avatar/male-avatar.png' :
-                        process.env.VUE_APP_DEFAULT_images_DIR +'default/avatar/female-avatar.png' : this.$store.getters.GetUserAvatar;
+                        process.env.VUE_APP_DEFAULT_images_DIR +'default/avatar/female-avatar.png' : (this.$store.getters.GetUserAvatar);
             },
             UserGender() {
                 return this.$store.getters.GetUserGender;

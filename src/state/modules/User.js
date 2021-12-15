@@ -212,8 +212,10 @@ const actions = {
             name : profileData.name,
             gender : profileData.gender
         };
-        axios.post('/update_user' , data)
+        axios.post('auth/updateuser' , data)
             .then(res =>{
+                console.log('ressss',res);
+
                 if (res.data.result === 'Done') {
                     alert('اطلاعات با موفقیت ویرایش شد :) ');
                     context.commit("SetUserFullName", res.data.user_data.User.name);
@@ -225,7 +227,6 @@ const actions = {
                     context.commit("SetAvatarLoaded",true);
                 }
             })
-
     }
 };
 
