@@ -73,7 +73,7 @@ const mutations = {
     },
 
     SetUserMeta(state, userMeta) {
-        if (userMeta.UserAvatar !== '') state.UserAvatar = process.env.VUE_APP_UPLOAD_DIR + 'users_images/' + userMeta.UserAvatar;
+        if (userMeta.UserAvatar !== '') state.UserAvatar = process.env.VUE_APP_UPLOAD_DIR + 'user_images/' + userMeta.UserAvatar;
         if (userMeta.UserGender !== '') state.UserGender = userMeta.UserGender;
     },
 
@@ -167,6 +167,7 @@ const actions = {
     GetUserById(context , user_id){
         axios.post('auth/getuserbyid', user_id)
             .then(response => {
+                console.log('respp',response);
                 if (response.data.body.User !== null  ) context.commit("SetUserFullName", response.data.body.User.name);
                 if (response.data.body.UserMeta !== null  ) {
                     context.commit("SetUserMeta", response.data.body.UserMeta);
@@ -214,8 +215,6 @@ const actions = {
         };
         axios.post('auth/updateuser' , data)
             .then(res =>{
-                console.log('ressss',res);
-
                 if (res.data.result === 'Done') {
                     alert('اطلاعات با موفقیت ویرایش شد :) ');
                     context.commit("SetUserFullName", res.data.user_data.User.name);
@@ -237,9 +236,6 @@ function decryptTokenFunc(secret_key , token){
             state.user_id = user.data.id;
             state.IsUserAuthenticated = (state.user_id !== '');
         }
-        // else {
-        //     console.log(err);
-        // }
     });
 }
 

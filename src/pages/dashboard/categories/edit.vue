@@ -17,8 +17,8 @@
               <label class="mainLabel" for="submitted">مادر دسته</label>
               <select class="form-control" id="submitted" @input="changeParentID" >
                 <option value="0">---</option>
-                <option :value="category.id" :selected="(GetCategory.parent_id===category.id)"
-                        v-for="category in headCats" :key="category.id">
+                <option :value="category.id" v-for="category in headCats" :key="category.id"
+                        :selected="(GetCategory.parentId==category.id)" >
                   {{ category.name }}
                 </option>
               </select>
