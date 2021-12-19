@@ -1,7 +1,6 @@
-import Vue from 'vue';
 import axios from "axios";
 import Swal from "sweetalert2";
-import {router} from "../../main";
+import router from '../../Routes';
 
 
 
@@ -50,7 +49,7 @@ const mutations = {
 
 const actions = {
     GetArticlesFromServer(context , page){
-        Vue.http.get('articles?page=' + page)
+        axios.get('articles?page=' + page)
             .then(res => {
                 return res.json();
             }).then(data=>{
@@ -59,7 +58,7 @@ const actions = {
     },
 
     GetUserArticles(context , data){
-        Vue.http.get('articlesList?page='+ data.page + '&user_id=' + data.user_id)
+        axios.get('articlesList?page='+ data.page + '&user_id=' + data.user_id)
             .then(res => {
                 return res.json();
             }).then(articles=>{
@@ -68,7 +67,7 @@ const actions = {
     },
 
     GetArticleFromServer(context,article_id){
-        Vue.http.get('articles/' + article_id)
+        axios.get('articles/' + article_id)
             .then(res => {
                 context.commit('SetArticle' ,res.body);
                 context.commit('SetisArticleLoaded' ,true);
@@ -117,9 +116,10 @@ const actions = {
 
 
 function addArticle(article_data) {
-    Vue.http.post('articles',article_data)
+    axios.post('article/articles',article_data)
         .then(res => {
-            if (res.status === 200 && res.body.result === 'Done') {
+            console.log('arcres',res);
+            if (res.status === 200 && res.data.result === 'Done') {
                 Swal.fire({
                     title: 'Success',
                     text: 'مقاله جدید ثبت شد.',
@@ -131,7 +131,7 @@ function addArticle(article_data) {
         })
 }
 function updateArticle(article_data) {
-    Vue.http.put('articles/' + article_data.id , article_data)
+    axios.put('articles/' + article_data.id , article_data)
         .then(response => {
             if (response.status === 200 && response.body.result === 'Done') {
                 Swal.fire({

@@ -58,10 +58,11 @@ const actions = {
             });
     },
     GetSubCatsFromServer(context){
-        axios.get('subCats')
+        axios.get('category/subcats')
             .then(response => {
+                console.log(response);
                 if (response.status === 200) {
-                    context.commit("SetSubCats" , response.body.cats);
+                    context.commit("SetSubCats" , response.data.cats);
                 }
             });
     },

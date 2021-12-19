@@ -70,7 +70,6 @@
               submitted:'',
               isfavorite :'',
               category_id:'',
-
               preview_image:'',
               img_event:''
           }
@@ -101,15 +100,14 @@
                   image_data.append('file', this.img_event.target.files[0]);
               }
 
-
               const data={
                   articleData :{
                       user_id:this.$store.getters.GetUserID,
                       title:this.title,
                       image:(this.img_event!=='')? image_data : '',
                       desc:this.desc,
-                      submitted:(this.submitted==='true')? 1 : 0,
-                      isfavorite:(this.isfavorite==='true')? 1 : 0,
+                      submitted:(this.submitted === 'true'),
+                      isfavorite:(this.isfavorite === 'true'),
                       category_id:this.category_id,
                   },
                   is_file_uploaded: this.img_event !== ''
