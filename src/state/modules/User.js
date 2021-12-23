@@ -191,7 +191,6 @@ const actions = {
         };
         axios.post('auth/uploadimg' , imageData, config)
             .then(res => {
-                console.log('resss',res);
                 if (res.data.result === 'Done') {
                     const data = {
                         userID: state.user_id,

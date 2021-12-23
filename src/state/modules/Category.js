@@ -60,7 +60,6 @@ const actions = {
     GetSubCatsFromServer(context){
         axios.get('category/subcats')
             .then(response => {
-                console.log(response);
                 if (response.status === 200) {
                     context.commit("SetSubCats" , response.data.cats);
                 }

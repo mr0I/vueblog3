@@ -79,8 +79,9 @@ const actions = {
             const config = {
                 headers: { 'content-type': 'multipart/form-data' }
             };
-            axios.post('uploadArticleImg' , data.articleData.image , config)
+            axios.post('article/uploadArticleImg' , data.articleData.image , config)
                 .then(response => {
+                    console.log('resppp',response);
                     data.articleData.image = response.data.image;
                     if (response.status === 200 && response.data.result === 'Done') {
                        addArticle(data.articleData);
@@ -118,7 +119,6 @@ const actions = {
 function addArticle(article_data) {
     axios.post('article/articles',article_data)
         .then(res => {
-            console.log('arcres',res);
             if (res.status === 200 && res.data.result === 'Done') {
                 Swal.fire({
                     title: 'Success',
