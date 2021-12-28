@@ -7,6 +7,7 @@ import router from '../../Routes';
 const state = {
     loading: true,
     Articles:{},
+    ArticlesPaginate:{},
     Article:{},
     userArticles:{},
     isArticleLoaded:false
@@ -19,6 +20,9 @@ const getters = {
     },
     GetArticles(state) {
         return state.Articles;
+    },
+    GetArticlesPaginate(state) {
+        return state.ArticlesPaginate;
     },
     GetArticle(state) {
         return state.Article;
@@ -35,6 +39,9 @@ const mutations = {
     SetArticles(state, articles) {
         state.Articles = articles;
         state.loading = false;
+    },
+    SetArticlesPaginate(state, paginateData) {
+        state.ArticlesPaginate = paginateData;
     },
     SetArticle(state, article) {
         state.Article = article;
@@ -58,12 +65,21 @@ const actions = {
     },
 
     GetUserArticles(context , data){
-        axios.get('articlesList?page='+ data.page + '&user_id=' + data.user_id)
-            .then(res => {
-                return res.json();
-            }).then(articles=>{
-            context.commit('SetUserArticles' ,articles);
-        })
+        axios.get('article/articlesList?page='+ data.page + '&user_id=' + data.user_id)
+            .then(articles => {
+                console.log('articles',articles);
+                const perPage = (articles.data.articles.rows).length;
+                const count = articles.data.articles.count;
+
+                const articlesPaginate = {
+                  'current_page' : data.page,
+                  'last_page' : Math.ceil(count / perPage),
+                  'per_page' : perPage
+                };
+
+                context.commit('SetUserArticles' ,articles.data.articles.rows);
+                context.commit('SetArticlesPaginate' ,articlesPaginate);
+            });
     },
 
     GetArticleFromServer(context,article_id){
@@ -81,7 +97,6 @@ const actions = {
             };
             axios.post('article/uploadArticleImg' , data.articleData.image , config)
                 .then(response => {
-                    console.log('resppp',response);
                     data.articleData.image = response.data.image;
                     if (response.status === 200 && response.data.result === 'Done') {
                        addArticle(data.articleData);

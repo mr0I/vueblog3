@@ -22,7 +22,7 @@
                                        @change="previewImage($event)" accept="image/*">
                                 <img :src="preview_image" class="uploading-image my-3" width="150" alt="prev_image"
                                 v-if="preview_image!=='' "/>
-                                <img :src="uploadDir + 'articles_images/' + image" v-else
+                                <img :src="uploadDir + 'article_images/' + image" v-else
                                      class="uploading-image my-3" width="150" alt="prev_image" />
                             </div>
                             <div class="form-group required col-md-12 mt-3">
