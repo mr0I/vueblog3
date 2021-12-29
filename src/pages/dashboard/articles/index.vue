@@ -50,8 +50,6 @@
             </tbody>
           </table>
 
-          <strong>{{ articlesPaginate }}</strong>
-
           <ul v-if="articles" class="pagination">
             <li v-if="articlesPaginate.current_page !== 1" :class="{'disabled':articlesPaginate.current_page === 1}" class="page-item first-item">
               <router-link :to="{ query: { page: 1 }}" class="page-link">اولین صفحه</router-link>
@@ -66,14 +64,14 @@
               <router-link :to="{ query: { page: articlesPaginate.current_page + 1 }}" class="page-link">بعدی</router-link>
             </li>
             <li v-if="articlesPaginate.current_page !== articlesPaginate.last_page" :class="{'disabled':articlesPaginate.current_page === articlesPaginate.last_page}" class="page-item last-item">
-              <router-link :to="{ query: { page: articles.last_page }}" class="page-link">آخرین صفحه</router-link>
+              <router-link :to="{ query: { page: articlesPaginate.last_page }}" class="page-link">آخرین صفحه</router-link>
             </li>
           </ul>
-
-          <!--<div class="modal fade" id="editModal" tabindex="-1" role="dialog"-->
-               <!--aria-labelledby="exampleModalLabel" aria-hidden="true">-->
-            <!--<modal-window  v-bind="[singleArticle]" @is_article_loaded="resetIsArticleLoaded"></modal-window>-->
-          <!--</div>-->
+          
+          <div class="modal fade" id="editModal" tabindex="-1" role="dialog"
+               aria-labelledby="exampleModalLabel" aria-hidden="true">
+            <modal-window v-bind="singleArticle"  @is_article_loaded="resetIsArticleLoaded"></modal-window>
+          </div>
         </div>
 
         <div v-else>
@@ -86,7 +84,7 @@
 
 
 <script>
-  //import ModalWindow from '../../modals/edit_article_modal';
+ import ModalWindow from '../../modals/edit_article_modal';
 
   export default {
     data(){
@@ -104,7 +102,7 @@
       }
     },
     components:{
-      //ModalWindow
+      ModalWindow
     },
     created(){
       this.Articles();

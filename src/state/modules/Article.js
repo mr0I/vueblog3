@@ -44,7 +44,8 @@ const mutations = {
         state.ArticlesPaginate = paginateData;
     },
     SetArticle(state, article) {
-        state.Article = article;
+         state.Article = article;
+        //Object.assign(state,article);
     },
     SetUserArticles(state, articles) {
         state.userArticles = articles;
@@ -67,12 +68,11 @@ const actions = {
     GetUserArticles(context , data){
         axios.get('article/articlesList?page='+ data.page + '&user_id=' + data.user_id)
             .then(articles => {
-                console.log('articles',articles);
-                const perPage = (articles.data.articles.rows).length;
+                const perPage = process.env.VUE_APP_DEFAULT_LIMIT;
                 const count = articles.data.articles.count;
 
                 const articlesPaginate = {
-                  'current_page' : data.page,
+                  'current_page' : parseInt(data.page),
                   'last_page' : Math.ceil(count / perPage),
                   'per_page' : perPage
                 };
@@ -83,9 +83,10 @@ const actions = {
     },
 
     GetArticleFromServer(context,article_id){
-        axios.get('articles/' + article_id)
+        axios.get('article/single_article/' + article_id)
             .then(res => {
-                context.commit('SetArticle' ,res.body);
+                console.log('article',res.data.article);
+                context.commit('SetArticle' ,res.data.article);
                 context.commit('SetisArticleLoaded' ,true);
             })
     },
