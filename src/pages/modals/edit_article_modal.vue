@@ -37,23 +37,23 @@
                                 <label class="mainLabel" for="submitted">وضعیت انتشار</label>
                                 <select class="form-control w-100" id="submitted" @change="changeSubmitted">
                                     <option disabled selected value="0">---</option>
-                                    <option value="true" :selected="submitted===1">منتشر شده</option>
-                                    <option value="false" :selected="submitted===0">منتشر نشده</option>
+                                    <option value="true" :selected="submitted==1">منتشر شده</option>
+                                    <option value="false" :selected="submitted==0">منتشر نشده</option>
                                 </select>
                             </div>
                             <div class="form-group required col-md-4 mt-3">
                                 <label class="mainLabel" for="is_favorite" >علاقه مندی</label>
                                 <select class="form-control w-100" id="is_favorite" @change="changeIsFavorite">
                                     <option disabled selected value="0">---</option>
-                                    <option value="true" :selected="isfavorite===1">هست</option>
-                                    <option value="false" :selected="isfavorite===0">نیست</option>
+                                    <option value="true" :selected="isfavorite==1">هست</option>
+                                    <option value="false" :selected="isfavorite==0">نیست</option>
                                 </select>
                             </div>
                             <div class="form-group required col-md-4 mt-3">
                                 <label class="mainLabel" for="category_id">دسته بندی</label>
                                 <select class="form-control w-100" id="category_id" @change="changeCategoryId">
                                     <option v-for="category in categories" :key="category.id" :value="category.id"
-                                            :selected="(category.id===category_id)? 'selected' : '' ">
+                                            :selected="(category.id===category_id)">
                                         {{ category.name }}
                                     </option>
                                 </select>
@@ -133,8 +133,8 @@
                         title:(this.edited_title!=='')? this.edited_title : this.title,
                         desc:(this.edited_desc!=='')? this.edited_desc : this.desc,
                         image:(this.img_event!=='')? image_data : this.image,
-                        submitted:(this.edited_submitted!=='')? (this.edited_submitted==='true')? 1 : 0 : this.submitted,
-                        isfavorite:(this.edited_isfavorite!=='')? (this.edited_isfavorite==='true')? 1 : 0 : this.isfavorite,
+                        submitted:(this.edited_submitted!=='')? (this.edited_submitted==='true')? 'true' : 'false' : this.submitted,
+                        isfavorite:(this.edited_isfavorite!=='')? (this.edited_isfavorite==='true')? 'true' : 'false' : this.isfavorite,
                         category_id:(this.edited_category_id!=='')? this.edited_category_id : this.category_id,
                     },
                     is_file_uploaded: this.img_event !== ''

@@ -141,7 +141,6 @@ const actions = {
 function GetCategoriesFunc(context) {
     axios.get('category/categories')
         .then(response=>{
-        console.log('cats',response);
         context.commit('SetCategories' ,response.data.categories);
     })
 }
