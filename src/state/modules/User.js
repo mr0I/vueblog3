@@ -48,7 +48,7 @@ const mutations = {
         // check if cookie is set and not expired
         if (VueCookieNext.getCookie(process.env.VUE_APP_AUTH_COOKIE_NAME)){
             const token = VueCookieNext.getCookie(process.env.VUE_APP_AUTH_COOKIE_NAME);
-            decryptTokenFunc(process.env.VUE_APP_TOKEN_SECRET , token);
+            decryptTokenFunc(state,process.env.VUE_APP_TOKEN_SECRET , token);
         } else {
             state.IsUserAuthenticated = false;
             state.user_id = '';
@@ -56,9 +56,6 @@ const mutations = {
     },
 
     SetAuthCookie(state, loginResult) {
-        // let jsonLoginResult = JSON.parse(loginResult);
-        // let unix_timestamp = jsonLoginResult.expire_time;
-
         let expireIn = new Date((Date.now() + 10800) * 1000);
         VueCookieNext.setCookie(process.env.VUE_APP_AUTH_COOKIE_NAME, loginResult, {
             expires: expireIn
@@ -67,9 +64,6 @@ const mutations = {
 
     SetUserFullName(state, userFullName) {
         state.UserFullName = userFullName;
-    },
-    SetUserID(state, userID) {
-        state.user_id = userID;
     },
 
     SetUserMeta(state, userMeta) {
@@ -84,21 +78,20 @@ const mutations = {
     SetUserAuthenticated(state, tokenData) {
         if (VueCookieNext.getCookie(process.env.VUE_APP_AUTH_COOKIE_NAME)){
             const {secret_key , token} = tokenData;
-            decryptTokenFunc(secret_key , token);
+            decryptTokenFunc(state ,secret_key , token);
         } else {
             state.IsUserAuthenticated = false;
             state.user_id = '';
         }
     },
 
-    SignOut() {
+    SignOut(state) {
         VueCookieNext.removeCookie(process.env.VUE_APP_AUTH_COOKIE_NAME);
         state.IsUserAuthenticated = false;
         state.user_id = '';
         state.UserAvatar = '';
         router.push('/');
     }
-
 };
 
 const actions = {
@@ -134,6 +127,7 @@ const actions = {
                 //     Authorization: 'Bearer ' + VueCookieNext.getCookie(process.env.VUE_APP_AUTH_COOKIE_NAME)
                 // }
             }).then(response => {
+                console.log('resp',response);
                 const {result,token} = response.data;
 
                 if (response.status===200 && result==='Done') {
@@ -151,7 +145,10 @@ const actions = {
 
             resolve_data.context.commit("SetAuthCookie", resolve_data.token);
             resolve_data.context.commit("SetUserAuthenticated", tokenData);
-            resolve_data.context.dispatch("GetUserById",state.user_id);
+            setTimeout(function () {
+                const userData = {"id": state.user_id};
+                resolve_data.context.dispatch("GetUserById",userData);
+            } , 1500);
 
             toastr.success('ورود موفق','تبریک');
             router.push({name:'dash'});
@@ -165,6 +162,7 @@ const actions = {
     },
 
     GetUserById(context , user_id){
+        console.log(user_id);
         axios.post('auth/getuserbyid', user_id)
             .then(response => {
                 if (response.data.body.User !== null  ) context.commit("SetUserFullName", response.data.body.User.name);
@@ -228,7 +226,7 @@ const actions = {
 };
 
 
-function decryptTokenFunc(secret_key , token){
+function decryptTokenFunc(state ,secret_key , token){
     jwt.verify(token, secret_key, (err, user) => {
         if (!err) {
             state.user_id = user.data.id;

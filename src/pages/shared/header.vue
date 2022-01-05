@@ -166,8 +166,10 @@
     export default {
         async created(){
             await this.$store.dispatch("CheckUserLogin");
-            const userData = {"id": this.$store.getters.GetUserID};
-            this.$store.dispatch("GetUserById" , userData);
+            if (this.$store.getters.GetUserID !== ''){
+                const userData = {"id": this.$store.getters.GetUserID};
+                this.$store.dispatch("GetUserById" , userData);
+            }
         },
         computed: {
             IsUserAuthenticated() {
