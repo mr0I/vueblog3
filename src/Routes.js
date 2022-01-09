@@ -38,7 +38,7 @@ const routes = [
         }
     },
     {
-        path: '/register',
+        path: '/register', 
         component: Register,
         meta:{
             middleware:[guest,log],
