@@ -10,7 +10,8 @@ const state = {
     ArticlesPaginate:{},
     Article:{},
     userArticles:{},
-    isArticleLoaded:false
+    isArticleLoaded:false,
+    SearchedArticles: {}
 };
 
 
@@ -32,6 +33,9 @@ const getters = {
     },
     GetisArticleLoaded(state) {
         return state.isArticleLoaded;
+    },
+    GetSearchedArticles(state){
+        return state.SearchedArticles;
     }
 };
 
@@ -52,6 +56,9 @@ const mutations = {
     },
     SetisArticleLoaded(state, statues) {
         state.isArticleLoaded = statues;
+    },
+    SetSearchedArticles(state,articles){
+        state.SearchedArticles = articles;
     }
 };
 
@@ -131,6 +138,15 @@ const actions = {
     },
     resetIsArticleLoaded(context){
         context.commit('SetisArticleLoaded' ,false);
+    },
+
+    searchArticle(context,sq){
+        axios.get('article/search?q=' + sq)
+            .then(res => {
+                console.log(res);
+                context.commit('SetSearchedArticles',res.data.articles);
+                router.push({name:'search-articles'});
+            });
     }
 };
 

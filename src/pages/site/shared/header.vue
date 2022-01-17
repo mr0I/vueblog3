@@ -3,7 +3,7 @@
   <header v-if="currentRoutePath.indexOf('dashboard') === -1 ">
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
       <a class="navbar-brand mx-2">
-        <img src="../../assets/logo.png" alt="" width="30" height="30">
+        <img src="../../../assets/logo.png" alt="" width="30" height="30">
       </a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"  aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -49,12 +49,15 @@
           </li>
         </ul>
 
-        <form action="search.html" class="form-inline" id="main_search">
-          <input class="form-control mr-sm-2" type="search" name="s" placeholder="جستجو..." aria-label="Search">
-          <button class="btn my-2 my-sm-0" type="submit">
+        <div class="form-inline" id="main_search">
+          <input type="text" class="form-control mr-sm-2" v-model="search_query"
+                 name="q" placeholder="جستجو..." aria-label="Search">
+          <button type="button" class="btn btn-info"
+                  style="height: 40px;border-radius: 50px 0 0 50px"
+                  @click.prevent="searchArticle()">
             <i class="material-icons">search</i>
           </button>
-        </form>
+        </div>
 
         <div class="dropdown mx-3">
           <i class="material-icons dropdown-toggle" data-toggle="dropdown" id="account" v-if="!IsUserAuthenticated">
@@ -89,7 +92,7 @@
         </label>
       </div>
       <a class="navbar-brand mx-2">
-        <img src="../../assets/logo.png" alt="" width="30" height="30">
+        <img src="../../../assets/logo.png" alt="" width="30" height="30">
       </a>
       <div class="collapse navbar-collapse" id="">
         <ul class="navbar-nav mr-auto">
@@ -112,7 +115,7 @@
     <nav class="navigation" style="z-index: 10 !important">
       <ul class="menu" id="side_menu">
         <li class="menu-header">
-          <img src="../../assets/noise.gif" width="100" height="100" v-if="! isAvatarLoaded">
+          <img src="../../../assets/noise.gif" width="100" height="100" v-if="! isAvatarLoaded">
           <img :src="UserAvatar" width="100" height="100" v-else-if="UserAvatar==''">
           <img :src="UserAvatar" width="100" height="100" v-else>
           <h5>نام کاربر: {{ UserFullName }}</h5>
@@ -164,6 +167,11 @@
 
 <script>
     export default {
+        data(){
+          return {
+              search_query: ''
+          }
+        },
         async created(){
             await this.$store.dispatch("CheckUserLogin");
             if (this.$store.getters.GetUserID !== ''){
@@ -182,8 +190,8 @@
                 const user_gender = (this.$store.getters.GetUserGender)? this.$store.getters.GetUserGender: 'male';
                 return (this.$store.getters.GetUserAvatar === '') ?
                     (user_gender === 'male') ?
-                        process.env.VUE_APP_DEFAULT_images_DIR +'default/avatar/male-avatar.png' :
-                        process.env.VUE_APP_DEFAULT_images_DIR +'default/avatar/female-avatar.png' : (this.$store.getters.GetUserAvatar);
+                        process.env.VUE_APP_DEFAULT_images_DIR +'avatar/male-avatar.png' :
+                        process.env.VUE_APP_DEFAULT_images_DIR +'avatar/female-avatar.png' : (this.$store.getters.GetUserAvatar);
             },
             UserGender() {
                 return this.$store.getters.GetUserGender;
@@ -198,6 +206,10 @@
         methods:{
             SignOut(){
                 this.$store.dispatch("SignOutUser");
+            },
+            searchArticle(){
+                console.log(this.search_query);
+                this.$store.dispatch("searchArticle",this.search_query);
             }
         }
     };

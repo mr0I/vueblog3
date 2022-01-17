@@ -1,9 +1,9 @@
 import { createWebHistory, createRouter } from "vue-router";
 
-import Index from './pages/index/index';
-import Articles from './pages/articles/articles';
-import Register from './pages/auth/register';
-import Login from './pages/auth/login';
+import Index from './pages/site/index/index';
+import Articles from './pages/site/articles/articles';
+import Register from './pages/site/auth/register';
+import Login from './pages/site/auth/login';
 import Dashboard from './pages/dashboard/dash/dashboard';
 import DashArticles from './pages/dashboard/articles/index';
 import DashAddArticle from './pages/dashboard/articles/add';
@@ -11,7 +11,8 @@ import DashAddCategory from './pages/dashboard/categories/add';
 import DashEditCategory from './pages/dashboard/categories/edit';
 import DashCategories from './pages/dashboard/categories/index';
 import DashProfile from './pages/dashboard/profile/index';
-import NotFoundPage from './pages/not_found';
+import NotFoundPage from './pages/site/not_found';
+import Search from './pages/site/search';
 
 
 // Middlewares
@@ -38,7 +39,7 @@ const routes = [
         }
     },
     {
-        path: '/register', 
+        path: '/register',
         component: Register,
         meta:{
             middleware:[guest,log],
@@ -51,6 +52,12 @@ const routes = [
             middleware: guest,
         },
         name:'login'
+    },
+    {
+        path: '/search',
+        // path: '/search?q=:q',
+        component: Search,
+        name: 'search-articles'
     },
     {
         path: '/dashboard',

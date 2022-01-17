@@ -9,8 +9,8 @@
 </template>
 
 <script>
-  import AppHeader from './pages/shared/header';
-  import AppFooter from './pages/shared/footer';
+  import AppHeader from './pages/site/shared/header';
+  import AppFooter from './pages/site/shared/footer';
 
   export default {
     components: {
