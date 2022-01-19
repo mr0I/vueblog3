@@ -51,10 +51,10 @@
 
         <div class="form-inline" id="main_search">
           <input type="text" class="form-control mr-sm-2" v-model="search_query"
-                 name="q" placeholder="جستجو..." aria-label="Search">
+                 name="q" placeholder="جستجو..." aria-label="Search" v-on:keyup.enter="triggerSearchBtn()" >
           <button type="button" class="btn btn-info"
                   style="height: 40px;border-radius: 50px 0 0 50px"
-                  @click.prevent="searchArticle()">
+                  @click.prevent="searchArticle()" :disabled="search_query ==='' ">
             <i class="material-icons">search</i>
           </button>
         </div>
@@ -208,8 +208,11 @@
                 this.$store.dispatch("SignOutUser");
             },
             searchArticle(){
-                console.log(this.search_query);
-                this.$store.dispatch("searchArticle",this.search_query);
+                let sq = this.search_query;
+                if (sq !== '') this.$store.dispatch("searchArticle",sq);
+            },
+            triggerSearchBtn(){
+                this.searchArticle();
             }
         }
     };

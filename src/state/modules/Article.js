@@ -3,7 +3,6 @@ import Swal from "sweetalert2";
 import router from '../../Routes';
 
 
-
 const state = {
     loading: true,
     Articles:{},
@@ -144,10 +143,14 @@ const actions = {
         axios.get('article/search?q=' + sq)
             .then(res => {
                 console.log(res);
-                context.commit('SetSearchedArticles',res.data.articles);
-                router.push({name:'search-articles'});
+                if (res.status == 201) {
+                    alert('input error!');
+                } else {
+                    context.commit('SetSearchedArticles',res.data.articles);
+                    router.push({ name: "search-articles", query: {q: sq} });
+                }
             });
-    }
+    },
 };
 
 

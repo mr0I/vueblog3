@@ -3,10 +3,10 @@
   <section class="search_content">
     <div class="container-fluid">
       <div class="row">
-        <h4 class="p-2 m-auto w-50 text-secondary">جستجو برای : <span>آموزش html</span></h4>
-       <div class="col-10 m-auto" v-if="searchedArticles.length === 0">
-         <div class="alert alert-warning my-4 text-center"><p>نتیجه ای یافت نشد!</p></div>
-       </div>
+        <h4 class="p-2 m-auto w-50 text-secondary">جستجو برای : <span> {{ queryParam }}</span></h4>
+        <div class="col-10 m-auto" v-if="Object.keys(searchedArticles).length  === 0">
+          <div class="alert alert-warning my-4 text-center"><p>نتیجه ای یافت نشد!</p></div>
+        </div>
         <div class="col-10 m-auto" v-else>
           <div class="card my-4" v-for="article in searchedArticles" :key="article.id">
             <div class="card-header list-inline">
@@ -36,12 +36,20 @@
 
 <script>
     export default {
+        created(){
+            if (this.$route.query.q !== ''){
+            this.$store.dispatch('searchArticle',this.$route.query.q);
+            }
+        },
         computed:{
             searchedArticles(){
                 return this.$store.getters.GetSearchedArticles;
             },
             uploadDir(){
                 return process.env.VUE_APP_UPLOAD_DIR;
+            },
+            queryParam() {
+                return this.$route.query.q;
             }
         }
     }

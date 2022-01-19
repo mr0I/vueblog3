@@ -55,7 +55,6 @@ const routes = [
     },
     {
         path: '/search',
-        // path: '/search?q=:q',
         component: Search,
         name: 'search-articles'
     },
