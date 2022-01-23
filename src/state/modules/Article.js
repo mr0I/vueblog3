@@ -142,8 +142,7 @@ const actions = {
     searchArticle(context,sq){
         axios.get('article/search?q=' + sq)
             .then(res => {
-                console.log(res);
-                if (res.status == 201) {
+                if (res.status === 201) {
                     alert('input error!');
                 } else {
                     context.commit('SetSearchedArticles',res.data.articles);

@@ -21,30 +21,16 @@
             <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
               دسته بندی مطالب
             </a>
-            <!-- <div class="dropdown-menu" aria-labelledby="navbarDropdown">
-                <a class="dropdown-item" href="#">آموزش وب</a>
-                <a class="dropdown-item" href="#">آموزش موبايل</a>
-                <div class="dropdown-divider"></div>
-                <a class="dropdown-item" href="#">ساير</a>
-            </div> -->
             <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-              <li class="dropdown-item dropdown">آموزش وب
+              <li class="dropdown-item dropdown" v-for="headcat in headCats" :key="headcat.id">
+                {{ headcat.name }}
                 <ul>
-                  <li><a href="#">Html</a></li>
-                  <li><a href="#">css</a></li>
-                  <li><a href="#">jquery</a></li>
+                  <li v-for="subcat in subCats" :key="subcat.id">
+                    <a href="#" v-if="headcat.id === subcat.parentId">{{ subcat.name }}</a>
+                  </li>
                 </ul>
               </li>
               <div class="dropdown-divider"></div>
-              <li class="dropdown-item dropdown">آموزش موبایل
-                <ul>
-                  <li><a href="#">Android</a></li>
-                  <li><a href="#">IOS</a></li>
-                  <li><a href="#">windows</a></li>
-                </ul>
-              </li>
-              <div class="dropdown-divider"></div>
-              <li class="dropdown-item" href="#">سایر</li>
             </ul>
           </li>
         </ul>
@@ -161,6 +147,8 @@
     </nav>
   </header>
   <!-- Header-End -->
+
+  <span class="mt-5">subs: {{ subCats }}</span>
 </template>
 
 
@@ -174,6 +162,8 @@
         },
         async created(){
             await this.$store.dispatch("CheckUserLogin");
+            await this.$store.dispatch("GetHeadCatsFromServer");
+            await this.$store.dispatch("GetSubCatsFromServer");
             if (this.$store.getters.GetUserID !== ''){
                 const userData = {"id": this.$store.getters.GetUserID};
                 this.$store.dispatch("GetUserById" , userData);
@@ -201,6 +191,12 @@
             },
             currentRoutePath() {
                 return this.$route.path;
+            },
+            headCats() {
+                return this.$store.getters.GetHeadCats;
+            },
+            subCats() {
+                return this.$store.getters.GetSubCats;
             }
         },
         methods:{

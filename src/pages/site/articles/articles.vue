@@ -28,10 +28,10 @@
                                     <li class="list-inline-item">
                                         <i class="material-icons">visibility</i><span>21</span>
                                     </li>
-                                  <li class="list-inline-item">
-                                    <i class="material-icons">date_range</i>
-                                    <span>{{ (new Date(article.created_at)).toLocaleDateString('fa-IR' , { year: 'numeric', month: 'long', day: 'numeric' }) }}</span>
-                                  </li>
+                                    <li class="list-inline-item">
+                                        <i class="material-icons">date_range</i>
+                                        <span>{{ (new Date(article.created_at)).toLocaleDateString('fa-IR' , { year: 'numeric', month: 'long', day: 'numeric' }) }}</span>
+                                    </li>
                                     <li class="list-inline-item">
                                         <i class="material-icons">favorite_border</i><span>33</span>
                                     </li>
@@ -45,8 +45,8 @@
                     <!--<div v-if="(articles.data).length == 0">-->
                     <!--مطلبی برای نمایش وجود ندارد!-->
                     <!--</div>-->
-                  
-                  <pagination align="center" :data="articles" @pagination-change-page="Articles"></pagination>
+
+                    <pagination align="center" :data="articles" @pagination-change-page="Articles"></pagination>
                 </div>
 
 
@@ -58,61 +58,22 @@
                             </div>
                             <div class="card-body">
                                 <ul class="category" id="indexCats">
-                                    <p class="mb-3" v-for="(headCat,index) in headCats" :key="headCat.id">
-										<span>
-											<a :href="'#Section'+index" data-toggle="collapse" class="cat-header">
-												{{ headCat.name }}
-											</a>
-											<li :id="'Section'+index" class="collapse mr-4" data-parent="#indexCats">
-												<ul>
-													<li v-for="subCat in subCats" :key="subCat.id">
-														<a href="#" class="cat-item" v-if="subCat.parent_id===headCat.id">
-                                                          <span>{{ subCat.name }}</span>
-                                                        </a>
-													</li>
-												</ul>
-											</li>
-										</span>
-                                    </p>
-
-                                    <!--<p class="mb-3">-->
-										<!--<span>-->
-											<!--<a href="#Section1" data-toggle="collapse" class="cat-header">-->
-												<!--برنامه نویسی موبایل-->
-											<!--</a>-->
-											<!--<li id="Section1" class="collapse mr-4" data-parent="#indexCats">-->
-												<!--<ul>-->
-													<!--<li >-->
-														<!--<a href="#" class="cat-item"><span>Android studio</span></a>-->
-													<!--</li>-->
-													<!--<li >-->
-														<!--<a href="#" class="cat-item"><span>ios</span></a>-->
-													<!--</li>-->
-													<!--<li >-->
-														<!--<a href="#" class="cat-item"><span>windows phone</span></a>-->
-													<!--</li>-->
-												<!--</ul>-->
-											<!--</li>-->
-										<!--</span>-->
-                                    <!--</p>-->
-                                    <!--<p class="mb-3">-->
-										<!--<span>-->
-											<!--<a href="#Section2" data-toggle="collapse" class="cat-header">-->
-												<!--برنامه نویسی وب-->
-											<!--</a>-->
-											<!--<li id="Section2" class="collapse mr-4" data-parent="#indexCats">-->
-												<!--<ul>-->
-													<!--<li >-->
-														<!--<a href="#" class="cat-item"><span>html</span></a>-->
-													<!--</li>-->
-													<!--<li >-->
-														<!--<a href="#" class="cat-item"><span>css</span></a>-->
-													<!--</li>-->
-
-												<!--</ul>-->
-											<!--</li>-->
-										<!--</span>-->
-                                    <!--</p>-->
+                                 <p class="mb-3" v-for="(headCat,index) in headCats" :key="headCat.id">
+                                    <span>
+                                      <a :href="'#Section'+index" data-toggle="collapse" class="cat-header">
+                                        {{ headCat.name }}
+                                      </a>
+                                      <li :id="'Section'+index" class="collapse mr-4" data-parent="#indexCats">
+                                        <ul>
+                                          <li v-for="subCat in subCats" :key="subCat.id">
+                                            <a href="#" class="cat-item" v-if="subCat.parentId === headCat.id">
+                                              <span>{{ subCat.name }}</span>
+                                            </a>
+                                          </li>
+                                        </ul>
+                                      </li>
+                                    </span>
+                                 </p>
                                 </ul>
                             </div>
                         </div>
@@ -126,7 +87,7 @@
 
 
 <script>
-  //import pagination from 'laravel-vue-pagination';
+    //import pagination from 'laravel-vue-pagination';
 
     export default {
         components:{
@@ -150,13 +111,13 @@
             }
         },
         created() {
-            // this.$store.dispatch("GetSubCatsFromServer");
-            // this.$store.dispatch("GetHeadCatsFromServer");
-            //
-            // this.Articles();
+            this.$store.dispatch("GetSubCatsFromServer");
+            this.$store.dispatch("GetHeadCatsFromServer");
+
+            //this.Articles();
         },
         methods:{
-             Articles(page=1){
+            Articles(page=1){
                 this.$store.dispatch('GetArticlesFromServer',page);
             }
         }

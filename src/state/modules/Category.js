@@ -88,10 +88,8 @@ const actions = {
     GetSelectedCategory(context , category_id) {
         axios.get('category/category/' + category_id)
             .then(response => {
-                console.log('dddd',response);
                 if (response.status === 200 && response.data.result === 'Done') {
                     context.commit("SetCategory" , response.data.category);
-                    // context.commit("SetCategory" , JSON.parse(response.data.category));
                     context.commit("SetIsEditDataReady" , true);
                 }
             });
@@ -140,8 +138,8 @@ const actions = {
 
 function GetCategoriesFunc(context) {
     axios.get('category/categories')
-        .then(response=>{
-        context.commit('SetCategories' ,response.data.categories);
+        .then(response => {
+            context.commit('SetCategories' ,response.data.categories);
     })
 }
 
