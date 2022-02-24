@@ -102,7 +102,6 @@
       <ul class="menu" id="side_menu">
         <li class="menu-header">
           <img src="../../../assets/noise.gif" width="100" height="100" v-if="! isAvatarLoaded">
-          <img :src="UserAvatar" width="100" height="100" v-else-if="UserAvatar==''">
           <img :src="UserAvatar" width="100" height="100" v-else>
           <h5>نام کاربر: {{ UserFullName }}</h5>
         </li>
@@ -177,7 +176,7 @@
                 return (this.$store.getters.GetUserFullName!==null)? this.$store.getters.GetUserFullName: '---';
             },
             UserAvatar() {
-                const user_gender = (this.$store.getters.GetUserGender)? this.$store.getters.GetUserGender: 'male';
+                const user_gender = (this.$store.getters.GetUserGender) ? this.$store.getters.GetUserGender: 'male';
                 return (this.$store.getters.GetUserAvatar === '') ?
                     (user_gender === 'male') ?
                         process.env.VUE_APP_DEFAULT_images_DIR +'avatar/male-avatar.png' :

@@ -43,7 +43,6 @@ const getters = {
 };
 
 const mutations = {
-
     CheckAuth(state){
         // check if cookie is set and not expired
         if (VueCookieNext.getCookie(process.env.VUE_APP_AUTH_COOKIE_NAME)){
@@ -67,8 +66,8 @@ const mutations = {
     },
 
     SetUserMeta(state, userMeta) {
-        if (userMeta.UserAvatar !== '') state.UserAvatar = process.env.VUE_APP_UPLOAD_DIR + 'user_images/' + userMeta.UserAvatar;
-        if (userMeta.UserGender !== '') state.UserGender = userMeta.UserGender;
+        if (userMeta.UserAvatar !== null) state.UserAvatar = process.env.VUE_APP_UPLOAD_DIR + 'user_images/' + userMeta.UserAvatar;
+        if (userMeta.UserGender !== null) state.UserGender = userMeta.UserGender;
     },
 
     SetAvatarLoaded(state, is_loaded) {
