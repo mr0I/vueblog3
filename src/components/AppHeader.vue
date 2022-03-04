@@ -3,7 +3,7 @@
   <header v-if="currentRoutePath.indexOf('dashboard') === -1 ">
     <nav class="navbar navbar-expand-lg navbar-dark fixed-top">
       <a class="navbar-brand mx-2">
-        <img src="../../../assets/logo.png" alt="" width="30" height="30">
+        <img src="../assets/logo.png" alt="" width="30" height="30">
       </a>
       <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent"  aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
@@ -78,10 +78,13 @@
         </label>
       </div>
       <a class="navbar-brand mx-2">
-        <img src="../../../assets/logo.png" alt="" width="30" height="30">
+        <img src="../assets/logo.png" alt="" width="30" height="30">
       </a>
       <div class="collapse navbar-collapse" id="">
         <ul class="navbar-nav mr-auto">
+          <li class="nav-item">
+              <strong>{{ idleTimer}}</strong>
+          </li>
           <li class="nav-item">
             <router-link class="nav-link" to="/">
               <i class="material-icons align-middle">open_in_new</i>
@@ -101,7 +104,7 @@
     <nav class="navigation" style="z-index: 10 !important">
       <ul class="menu" id="side_menu">
         <li class="menu-header">
-          <img src="../../../assets/noise.gif" width="100" height="100" v-if="! isAvatarLoaded">
+          <img src="../assets/noise.gif" width="100" height="100" v-if="! isAvatarLoaded">
           <img :src="UserAvatar" width="100" height="100" v-else>
           <h5>نام کاربر: {{ UserFullName }}</h5>
         </li>
@@ -150,14 +153,16 @@
   <span class="mt-5">subs: {{ subCats }}</span>
 </template>
 
-
-
 <script>
     export default {
+        name: 'AppHeader',
         data(){
-          return {
-              search_query: ''
-          }
+            return {
+                search_query: '',
+            }
+        },
+        props:{
+            idleTimer: Number
         },
         async created(){
             await this.$store.dispatch("CheckUserLogin");
@@ -214,8 +219,7 @@
 
 </script>
 
-
-<style>
+<style scoped>
   nav.navigation {
     top: 50px;
     background: #fff;

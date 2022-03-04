@@ -1,5 +1,4 @@
 <template>
-
   <div class="container-fluid">
     <section class="panel_content">
       <h1>پنل مدیریت</h1>
@@ -9,7 +8,6 @@
       </transition>
     </section>
   </div>
-
 </template>
 
 

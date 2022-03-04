@@ -1,26 +1,16 @@
 import { createApp } from 'vue';
 import App from './App.vue';
-
-// import VueRouter from 'vue-router';
-// import VueResource from 'vue-resource';
-// import VueCookie from 'vue-cookie';
 import Vuelidate from 'vuelidate';
 import router from './Routes';
 import {store} from './state/Store';
 import axios from 'axios';
 import toastr from 'toastr';
 import { VueCookieNext } from 'vue-cookie-next';
-// global.Raphael = Raphael;
+
 const app = createApp(App);
 
 
-
-// app.use(VueRouter);
-// app.use(VueCookie);
-// app.use(VueResource);
 app.use(Vuelidate);
-
-
 
 // Set axios defaults
 const http = require('http');

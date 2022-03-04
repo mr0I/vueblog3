@@ -1,6 +1,4 @@
 <template>
-  <!--<strong>{{ articles }}</strong>-->
-
   <div class="m-auto w-75">
     <h5 class="panelTitle">لیست مقالات</h5>
     <hr>
