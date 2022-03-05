@@ -15,7 +15,7 @@ const state = {
     is_form_submited: false,
     is_login_form_submited: false,
     is_avarat_loaded: false,
-    user_id: ''
+    user_id: '',
 };
 
 const getters = {
@@ -39,7 +39,7 @@ const getters = {
     },
     IsAvatarLoaded(state){
         return state.is_avarat_loaded;
-    }
+    },
 };
 
 const mutations = {
@@ -90,7 +90,7 @@ const mutations = {
         state.user_id = '';
         state.UserAvatar = '';
         router.push('/');
-    }
+    },
 };
 
 const actions = {
@@ -126,7 +126,6 @@ const actions = {
                 //     Authorization: 'Bearer ' + VueCookieNext.getCookie(process.env.VUE_APP_AUTH_COOKIE_NAME)
                 // }
             }).then(response => {
-                console.log('resp',response);
                 const {result,token} = response.data;
 
                 if (response.status===200 && result==='Done') {
@@ -220,7 +219,7 @@ const actions = {
                     context.commit("SetAvatarLoaded",true);
                 }
             })
-    }
+    },
 };
 
 

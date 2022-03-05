@@ -80,10 +80,10 @@
       <a class="navbar-brand mx-2">
         <img src="../assets/logo.png" alt="" width="30" height="30">
       </a>
-      <div class="collapse navbar-collapse" id="">
+      <div class="collapse navbar-collapse">
         <ul class="navbar-nav mr-auto">
           <li class="nav-item">
-              <strong>{{ idleTimer}}</strong>
+              <strong style="color: #eeeeee">زمان باقیمانده {{ formatIldeTime }}</strong>
           </li>
           <li class="nav-item">
             <router-link class="nav-link" to="/">
@@ -154,6 +154,7 @@
 </template>
 
 <script>
+
     export default {
         name: 'AppHeader',
         data(){
@@ -201,6 +202,11 @@
             },
             subCats() {
                 return this.$store.getters.GetSubCats;
+            },
+            formatIldeTime(){
+                const idt = this.idleTimer;
+                const minutes = Math.floor(idt / 60);const seconds = idt - minutes * 60;
+                return seconds + ' : ' + minutes
             }
         },
         methods:{

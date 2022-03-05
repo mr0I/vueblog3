@@ -17,7 +17,7 @@
                       <div class="input-group-prepend">
                         <div class="input-group-text"><i class="material-icons">email</i></div>
                       </div>
-                      <input type="email" class="form-control" placeholder="ایمیل" v-model="email">
+                      <input type="email" class="form-control" placeholder="ایمیل" v-model="email" name="email">
                     </div>
                   </div>
                   <div class="d-flex flex-wrap justify-content-center">

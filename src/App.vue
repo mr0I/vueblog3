@@ -22,17 +22,7 @@
         data(){
             return {
                 timer: null,
-                idleTimer: 10 // seconds
-            }
-        },
-        created(){
-            if (this.IsUserAuthenticated) {
-                window.addEventListener('scroll', this.handleScroll);
-            }
-        },
-        methods:{
-            handleScroll () {
-                this.idleTimer = 10;
+                idleTimer: Number(process.env.VUE_APP_DEFAULT_IDLE_TIME) // seconds
             }
         },
         computed:{
@@ -43,18 +33,29 @@
                 return this.$store.getters.IsUserAuthenticated;
             }
         },
+        created(){
+           window.addEventListener('scroll', this.handleEvent);
+           window.addEventListener('click', this.handleEvent);
+        },
+        methods:{
+            handleEvent() {
+                this.idleTimer = Number(process.env.VUE_APP_DEFAULT_IDLE_TIME);
+            }
+        },
         mounted: function () {
             this.timer = setInterval(() => {
                 if (this.IsUserAuthenticated) this.idleTimer -= 1;
                     if (this.idleTimer <= 0) {
                         toastr.warning('خروج به دلیل عدم فعالیت!!!','اوپس :-(');
                         this.$store.dispatch("SignOutUser");
-                        this.idleTimer = 10;
+                        this.idleTimer = Number(process.env.VUE_APP_DEFAULT_IDLE_TIME);
                     }
             }, 1000);
         },
         beforeUnmount() {
-            clearInterval(this.timer)
+            clearInterval(this.timer);
+            window.removeEventListener('scroll', this.handleEvent);
+            window.removeEventListener('click', this.handleEvent);
         }
     }
 </script>
