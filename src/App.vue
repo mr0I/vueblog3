@@ -9,10 +9,9 @@
 </template>
 
 <script>
-    import AppHeader from './components/AppHeader';
-    import AppFooter from './components/AppFooter';
+    import AppHeader from '@/components/AppHeader';
+    import AppFooter from '@/components/AppFooter';
     import toastr from 'toastr';
-
 
     export default {
         components: {

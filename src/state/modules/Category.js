@@ -2,7 +2,6 @@ import Swal from "sweetalert2";
 import router from '../../Routes';
 import axios from 'axios';
 
-
 const state = {
     HeadCats:{},
     SubCats:{},

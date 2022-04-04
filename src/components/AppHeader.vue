@@ -149,8 +149,6 @@
     </nav>
   </header>
   <!-- Header-End -->
-
-  <span class="mt-5">subs: {{ subCats }}</span>
 </template>
 
 <script>
