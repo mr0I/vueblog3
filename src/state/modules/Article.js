@@ -1,6 +1,7 @@
 import axios from "axios";
 import Swal from "sweetalert2";
 import router from '../../Routes';
+import { VueCookieNext } from 'vue-cookie-next';
 
 
 const state = {
@@ -188,20 +189,22 @@ function updateArticle(article_data) {
         });
 }
 function GetUserArticlesFunc(context,page=1,user_id) {
-    axios.get('article/articlesList?page='+ page + '&user_id=' + user_id)
-        .then(articles => {
-            const perPage = process.env.VUE_APP_DEFAULT_LIMIT;
-            const count = articles.data.articles.count;
+    axios.get('article/articlesList?page='+ page + '&user_id=' + user_id,{
+        headers:{Authorization:'Bearer '+VueCookieNext.getCookie(process.env.VUE_APP_AUTH_COOKIE_NAME)}
+    }).then(articles => {
+        const perPage = process.env.VUE_APP_DEFAULT_LIMIT;
+        const count = articles.data.articles.count;
 
-            const articlesPaginate = {
-                'current_page' : parseInt(page),
-                'last_page' : Math.ceil(count / perPage),
-                'per_page' : perPage
-            };
+        const articlesPaginate = {
+            'current_page' : parseInt(page),
+            'last_page' : Math.ceil(count / perPage),
+            'per_page' : perPage
+        };
 
-            context.commit('SetUserArticles' ,articles.data.articles.rows);
-            context.commit('SetArticlesPaginate' ,articlesPaginate);
-        });
+        context.commit('SetUserArticles' ,articles.data.articles.rows);
+        context.commit('SetArticlesPaginate' ,articlesPaginate);
+    });
+
 }
 
 export default {
