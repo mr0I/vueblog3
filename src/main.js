@@ -29,6 +29,7 @@ axios.defaults.headers = {'X-Custom-Header': 'foobar'};
 axios.defaults.httpAgent = httpAgent;
 axios.defaults.httpsAgent = httpsAgent;
 axios.defaults.timeout = 60000;
+axios.defaults.withCredentials = true;
 
 
 VueCookieNext.config({

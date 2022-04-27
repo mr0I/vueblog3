@@ -121,11 +121,7 @@ const actions = {
 
     LoginUser(context, loginData) {
         return new Promise(function (resolve,reject) {
-            axios.post('auth/login', loginData ,{
-                // headers:{
-                //     Authorization: 'Bearer ' + VueCookieNext.getCookie(process.env.VUE_APP_AUTH_COOKIE_NAME)
-                // }
-            }).then(response => {
+            axios.post('auth/login', loginData).then(response => {
                 const {result,token} = response.data;
 
                 if (response.status===200 && result==='Done') {
@@ -177,7 +173,10 @@ const actions = {
     },
 
     SignOutUser(context) {
-        context.commit("SignOut");
+		axios.post('auth/logout')
+            .then(response => {
+				if(response.data.success) context.commit("SignOut");
+            });
     },
 
     uploadImage(context , imageData){
