@@ -90,7 +90,17 @@
             isfavorite:Number,
             category_id:Number,
             id:Number,
-            image:String
+            image:String,
+            // msg:{
+            //     required: false,
+            //     type: String,
+            //     default: 'info',
+            //     validator: (value) => [
+            //         'info',
+            //         'error',
+            //         '  success'
+            //     ].includes(value.toLowerCase())
+            // }
         },
         computed:{
             categories(){

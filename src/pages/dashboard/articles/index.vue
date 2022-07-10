@@ -81,7 +81,8 @@
 </template>
 
 
-<script>
+<script lang="ts">
+  import {mapGetters} from 'vuex';
     import ModalWindow from '../../modals/edit_article_modal';
 
     export default {
@@ -155,18 +156,10 @@
             }
         },
         computed:{
-            articles(){
-                return this.$store.getters.GetUserArticles;
-            },
-            articlesPaginate(){
-                return this.$store.getters.GetArticlesPaginate;
-            },
-            singleArticle(){
-                return this.$store.getters.GetArticle;
-            },
-            categories(){
-                return this.$store.getters.GetSubCats;
-            }
+            ...mapGetters({articles: ['GetUserArticles']}),
+            ...mapGetters({articlesPaginate: ['GetArticlesPaginate']}),
+            ...mapGetters({singleArticle: ['GetArticle']}),
+            ...mapGetters({categories: ['GetSubCats']}),
         }
     }
 </script>

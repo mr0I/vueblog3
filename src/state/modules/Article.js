@@ -16,27 +16,13 @@ const state = {
 
 
 const getters = {
-    GetLoading(state){
-        return state.HeadCats;
-    },
-    GetArticles(state) {
-        return state.Articles;
-    },
-    GetArticlesPaginate(state) {
-        return state.ArticlesPaginate;
-    },
-    GetArticle(state) {
-        return state.Article;
-    },
-    GetUserArticles(state) {
-        return state.userArticles;
-    },
-    GetisArticleLoaded(state) {
-        return state.isArticleLoaded;
-    },
-    GetSearchedArticles(state){
-        return state.SearchedArticles;
-    }
+    GetLoading: state => state.HeadCats,
+    GetArticles: state => state.Articles,
+    GetArticlesPaginate: state => state.ArticlesPaginate,
+    GetArticle: state => state.Article,
+    GetUserArticles: state => state.userArticles,
+    GetisArticleLoaded: state => state.isArticleLoaded,
+    GetSearchedArticles: state => state.SearchedArticles,
 };
 
 const mutations = {
