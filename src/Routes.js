@@ -20,6 +20,7 @@ import auth from './middlewares/auth';
 import guest from './middlewares/guest';
 import log from './middlewares/log';
 import defJQ from './middlewares/default_jquery';
+// import dtbl from './middlewares/dtbl';
 
 
 const routes = [

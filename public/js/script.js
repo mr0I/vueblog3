@@ -23,7 +23,7 @@ jQuery(document).ready(function($) {
 			var inputWidth = $('form#main_search').find('input').width();
 			if (inputWidth != 0 && !hasFocus) {
 				$('form#main_search').find('input').animate({width:'0'}, 300)
-				.css('background', 'transparent').val('');
+					.css('background', 'transparent').val('');
 				$('form#main_search').find('button').css('background', 'transparent');
 			}
 		} ,8000);
@@ -34,10 +34,10 @@ jQuery(document).ready(function($) {
 		var icon = $(this).find('i').text();
 		if (icon == 'favorite_border') {
 			$(this).find('i').text('favorite').addClass('wow heartBeat')
-			.css('color', '#E040FB');
+				.css('color', '#E040FB');
 		}else{
 			$(this).find('i').text('favorite_border').removeClass('wow heartBeat')
-			.css('color', '#757575');
+				.css('color', '#757575');
 		}
 	});
 
@@ -79,52 +79,56 @@ jQuery(document).ready(function($) {
 
 
 // Custom tooltip //
-function placeTooltip(x_pos, y_pos) {
-	$("#tooltip").css({
-		top: y_pos-70 + 'px',
-		left: x_pos-60 + 'px',
-		position: 'absolute'
+	function placeTooltip(x_pos, y_pos) {
+		$("#tooltip").css({
+			top: y_pos-70 + 'px',
+			left: x_pos-60 + 'px',
+			position: 'absolute'
+		});
+	}
+	$('p.article_text').mouseup(function(e) {
+		var selection = window.getSelection().toString();
+		$('p#selTxt').val(selection.toString());
+		var x = e.pageX;
+		var y = e.pageY;
+		placeTooltip(x, y);
+		$("#tooltip").show();
 	});
-}
-$('p.article_text').mouseup(function(e) {
-	var selection = window.getSelection().toString();
-	$('p#selTxt').val(selection.toString());
-	var x = e.pageX;
-	var y = e.pageY;
-	placeTooltip(x, y);
-	$("#tooltip").show();
-});
-$('a.dismiss').on('click', function(event) {
-	$('div#tooltip').css('display', 'none');
-});
-$('a.ccopy').click(function(event) {
-	event.preventDefault();
-	var $temp = $("<input>");
-	$("body").append($temp);
-	$temp.val($('p#selTxt').val()).select();
-	document.execCommand("copy");
-	$temp.remove();
-	$('div#tooltip').css('display', 'none');
-	alert('متن کپی شد!');
-});
-$('a.cshare').click(function(event) {
-	$(this).attr('href', 'http://www.facebook.com/share.phpv=4&src=' + $('p#selTxt').val());
-	$('div#tooltip').css('display', 'none');
-});
+	$('a.dismiss').on('click', function(event) {
+		$('div#tooltip').css('display', 'none');
+	});
+	$('a.ccopy').click(function(event) {
+		event.preventDefault();
+		var $temp = $("<input>");
+		$("body").append($temp);
+		$temp.val($('p#selTxt').val()).select();
+		document.execCommand("copy");
+		$temp.remove();
+		$('div#tooltip').css('display', 'none');
+		alert('متن کپی شد!');
+	});
+	$('a.cshare').click(function(event) {
+		$(this).attr('href', 'http://www.facebook.com/share.phpv=4&src=' + $('p#selTxt').val());
+		$('div#tooltip').css('display', 'none');
+	});
 
 
 // Auto hide Alerts
-setInterval(function(){
-	var is_shown = $('.my_alert').css('display');
-	if (is_shown == 'block') {
-		$('.my_alert').slideUp('slow');
-	}
-	$('.my_alert').css('display', 'block')
-} ,6000);
+	setInterval(function(){
+		var is_shown = $('.my_alert').css('display');
+		if (is_shown == 'block') {
+			$('.my_alert').slideUp('slow');
+		}
+		$('.my_alert').css('display', 'block')
+	} ,6000);
 
-
-
-
+	setTimeout(function () {
+		$('#tbl_categories').dataTable({
+			paginate: true,
+			scrollY: 300
+		});
+	},500);
 
 });
+
 

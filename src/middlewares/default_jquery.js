@@ -26,6 +26,13 @@ export default function defJQ({ next }) {
         $('[data-plugin="switchery"]').each(function () {
             new Switchery($(this)[0], $(this).data());
         })
+
+        setTimeout(function () {
+            $('#tbl_categories').dataTable({
+                paginate: true,
+                scrollY: 300
+            });
+        },500);
     });
 
     return next();

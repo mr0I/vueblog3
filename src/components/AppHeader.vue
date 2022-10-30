@@ -131,7 +131,7 @@
         <li class="collapse" id="sec2" data-parent="#side_menu">
           <ul>
             <li >
-              <router-link to="/dashboard/categories" class="side_menu_item">
+              <router-link to="/dashboard/categories" class="side_menu_item" >
                 <span><i class="material-icons">list</i>لیست دسته بندی ها </span>
               </router-link>
             </li>

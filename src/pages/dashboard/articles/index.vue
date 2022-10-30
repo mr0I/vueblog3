@@ -81,8 +81,8 @@
 </template>
 
 
-<script lang="ts">
-  import {mapGetters} from 'vuex';
+<script>
+  import {mapGetters, mapActions} from 'vuex';
     import ModalWindow from '../../modals/edit_article_modal';
 
     export default {
@@ -116,6 +116,7 @@
             }
         },
         methods:{
+            ...mapActions(['resetIsArticleLoaded', 'GetArticleFromServer']),
             setPages(){
                 let numberOfPages = Math.ceil((this.articlesPaginate).last_page / (this.articlesPaginate).per_page);
                 this.pages = [];
@@ -141,10 +142,6 @@
             },
             GetArticleFromServer(article_id){
                 this.articleId=article_id;
-                this.$store.dispatch("GetArticleFromServer",article_id);
-            },
-            resetIsArticleLoaded(){
-                this.$store.dispatch("resetIsArticleLoaded");
             },
             DeleteArticle(article_id){
                 const data = {

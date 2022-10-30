@@ -17,7 +17,8 @@
           </form>
 
           <div class="table-responsive my-4">
-            <table class="table table-hover table-sm table-light" id="tbl_categories">
+            <table class="table table-hover table-sm table-light"
+                   id="tbl_categories" ref="tbl_categories">
               <thead class="thead-inverse">
               <tr>
                 <th style="width: 15%">ردیف</th>
@@ -28,7 +29,7 @@
               </thead>
               <tbody class="bg-light" v-if="CategoriesList.length!==0">
               <tr v-for="(category,index) in CategoriesList" :key="category.id">
-              <!--<tr v-for="(category,index) in CategoriesList.filter(cat => !cat.name.indexOf(this.filterByName))" :key="category.id">-->
+                <!--<tr v-for="(category,index) in CategoriesList.filter(cat => !cat.name.indexOf(this.filterByName))" :key="category.id">-->
                 <td >{{ ++index }}</td>
                 <td>{{ category.name }}</td>
                 <td v-if="category.Parent!==null">{{ category.Parent.name }}</td>
@@ -39,36 +40,62 @@
                     ویرایش
                   </router-link>
                   <button  @click.prevent="deleteCat(category.id)"
-                     class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored bg-danger">
+                           class="mdl-button mdl-js-button mdl-button--raised mdl-button--colored bg-danger">
                     حذف</button>
                 </td>
               </tr>
               </tbody>
             </table>
           </div>
-
         </div>
-
       </div>
     </section>
   </div>
   <!-- content-End -->
 </template>
 
+<!--<script type="text/javascript" src="<%= BASE_URL %>libs/data-table/jquery.dataTables.min.js" defer></script>-->
 
 <script>
+    import $ from 'jquery';
+    // require('../../../../public/libs/data-table/jquery.dataTables.min');
+    // import {nextTick} from 'vue';
+
     export default {
         data(){
-          return{
-              filterByName:''
-          }
+            return{
+                filterByName:''
+            }
         },
         created(){
-             this.$store.dispatch('GetCategories');
-             //console.log(this.CategoriesList);
+            this.$store.dispatch('GetCategories');
+        },
+       mounted(){
+
+           let divScripts = document.getElementById('load-script');
+           let newScript = document.createElement('script');
+           newScript.src = 'https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js';
+           divScripts.appendChild(newScript);
+
+// await nextTick();
+
+            // $(document).ready(function () {
+
+            // })
+
+            // (this.$refs.tbl_categories).display = false;
+            //
+            // const table = document.getElementById('example');
+            // table.dataTable();
+          // this.loadTable();
+
+           // setTimeout(function ($) {
+               //$(this.$refs.tbl_categories).dataTable();
+           // },1000);
+           
         },
         computed:{
-          CategoriesList(){
+            CategoriesList(){
                 return this.$store.getters.GetCategories;
             },
             ClearInputStyles(){
@@ -87,6 +114,15 @@
             },
             clearInput(){
                 this.filterByName='';
+            },
+            loadTable(){
+                setTimeout(function () {
+                    $('#tbl_categories').dataTable({
+                        paginate: true,
+                        scrollY: 300
+                    });
+                    // $(this.$el).dataTable();
+                },500);
             }
         }
     };
