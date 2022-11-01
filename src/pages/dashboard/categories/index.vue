@@ -58,8 +58,7 @@
 
 <script>
     import $ from 'jquery';
-    // require('../../../../public/libs/data-table/jquery.dataTables.min');
-    // import {nextTick} from 'vue';
+    require('../../../../public/libs/data-table/jquery.dataTables.min');
 
     export default {
         data(){
@@ -71,29 +70,11 @@
             this.$store.dispatch('GetCategories');
         },
        mounted(){
-
-           let divScripts = document.getElementById('load-script');
-           let newScript = document.createElement('script');
-           newScript.src = 'https://cdn.datatables.net/1.12.1/js/jquery.dataTables.min.js';
-           divScripts.appendChild(newScript);
-
-// await nextTick();
-
-            // $(document).ready(function () {
-
-            // })
-
-            // (this.$refs.tbl_categories).display = false;
-            //
-            // const table = document.getElementById('example');
-            // table.dataTable();
-          // this.loadTable();
-
-           // setTimeout(function ($) {
-               //$(this.$refs.tbl_categories).dataTable();
-           // },1000);
-           
-        },
+           $(this.$refs.tbl_categories).dataTable({
+               paginate: true,
+               scrollY: 300
+           });
+       },
         computed:{
             CategoriesList(){
                 return this.$store.getters.GetCategories;
@@ -114,15 +95,6 @@
             },
             clearInput(){
                 this.filterByName='';
-            },
-            loadTable(){
-                setTimeout(function () {
-                    $('#tbl_categories').dataTable({
-                        paginate: true,
-                        scrollY: 300
-                    });
-                    // $(this.$el).dataTable();
-                },500);
             }
         }
     };

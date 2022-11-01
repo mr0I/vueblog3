@@ -19,8 +19,6 @@ import Search from './pages/site/search';
 import auth from './middlewares/auth';
 import guest from './middlewares/guest';
 import log from './middlewares/log';
-import defJQ from './middlewares/default_jquery';
-// import dtbl from './middlewares/dtbl';
 
 
 const routes = [
@@ -29,7 +27,7 @@ const routes = [
         component: Index,
         meta:{
             title:"صفحه اصلی",
-            middleware:[defJQ,log]
+            middleware:log
         }
     },
     {
@@ -63,7 +61,7 @@ const routes = [
         path: '/dashboard',
         component: Dashboard,
         meta: {
-            middleware: [auth,defJQ],
+            middleware: auth,
         },
         name:'dash',
         children:[

@@ -12,9 +12,9 @@
 
 
 <script>
-  export default {
-      async created() {
-          //await this.$store.dispatch('GetCategories');
-      }
-  }
+    require('../../../../public/js/preloader');
+
+
+    export default {
+    }
 </script>
